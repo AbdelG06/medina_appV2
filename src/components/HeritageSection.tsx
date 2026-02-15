@@ -1,12 +1,21 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Clock, MapPin, Star, X } from "lucide-react";
+import { Clock, MapPin, SlidersHorizontal, Star, X } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.jpg";
 import ecoleBounania from "../assets/ecole_bounania.jpg";
 import tannerie from "../assets/tannerie.jpg";
 import museeNejjarin from "../assets/musee-nejjarine.jpg";
 import myIdriss from "../assets/my-idriss.jpg";
 import seffarine from "../assets/seffarine.jpg";
+import attarin from "../assets/attarin.jpg";
+import darBatha from "../assets/Dar-batha.jpg";
+import borjNord from "../assets/Borj_nord.jpg";
+import zaouiaSidiAhmedTijani from "../assets/Zaouia-Sidi-Ahmed-Tijani.jpg";
+import portePalais from "../assets/Porte_palais.jpg";
+import jnanSbil from "../assets/Jnan_Sbil.jpg";
+import mosqueAndalous from "../assets/Mosque_andalous.jpg";
+import palaisMnebhi from "../assets/palais_mnebhi.jpg";
 
 type Monument = {
   name: string;
@@ -25,10 +34,23 @@ type MapConfig = {
 
 const INITIAL_VISIBLE_MONUMENTS = 6;
 const LOAD_MORE_STEP = 4;
+const ALL_CATEGORIES = "all";
+
+const categoryFilters = [
+  { value: ALL_CATEGORIES, label: "Toutes catégories" },
+  { value: "mosquee_mausolee", label: "Mosquée & Mausolée" },
+  { value: "medersa", label: "Médersa (école)" },
+  { value: "Artisanat", label: "Artisanat" },
+  { value: "Musée", label: "Musée" },
+  { value: "Place", label: "Place" },
+  { value: "Jardin", label: "Jardin" },
+  { value: "Palais", label: "Palais" },
+];
 
 const categoryColors: Record<string, string> = {
   Mosquée: "bg-primary text-primary-foreground",
   Médersa: "bg-secondary text-secondary-foreground",
+  "Médersa & Mosquée": "bg-secondary text-secondary-foreground",
   Artisanat: "bg-moroccan-ochre text-accent-foreground",
   Musée: "bg-moroccan-terracotta text-primary-foreground",
   "Palais & Musée": "bg-moroccan-terracotta text-primary-foreground",
@@ -73,18 +95,20 @@ const monumentMaps: Record<string, MapConfig> = {
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.171203141798!2d-4.9761914242829866!3d34.06512527315204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff359ca2f5575%3A0x694d0781fb7d3f1f!2sM%C3%A9dersa%20Attarine!5e0!3m2!1sfr!2sma!4v1771118278891!5m2!1sfr!2sma",
   },
   "Musée Batha": {
-    linkUrl: "https://www.google.com/maps/search/?api=1&query=Musee+Batha+Fes",
+    embedUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.364090259367!2d-4.983066899999999!3d34.0601798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4aed90b70d3%3A0xc44a61c2c91a5c87!2sMus%C3%A9e%20batha!5e0!3m2!1sfr!2sma!4v1771156528030!5m2!1sfr!2sma",
   },
   "Borj Nord": {
     embedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13221.453654582829!2d-4.99334517941508!3d34.06019714894271!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4aed90b70d3%3A0xc44a61c2c91a5c87!2sMus%C3%A9e%20batha!5e0!3m2!1sfr!2sma!4v1771118306516!5m2!1sfr!2sma",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.0873183142967!2d-4.987513088518!3d34.06727581682398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4a4f182a245%3A0x1fa05b327717df71!2sBorj%20Nord!5e0!3m2!1sfr!2sma!4v1771156593971!5m2!1sfr!2sma",
   },
   "Zaouia Sidi Ahmed Tijani": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13220.498844445885!2d-4.983701629411644!3d34.066317197622226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9f8b688fd6c767%3A0x9bd424c537944bf6!2sMausol%C3%A9e%20de%20Sidi%20Ahmed%20al-Tijani!5e0!3m2!1sfr!2sma!4v1771118369859!5m2!1sfr!2sma",
   },
   "Porte du Palais Royal de Fès": {
-    linkUrl: "https://www.google.com/maps/search/?api=1&query=Porte+du+Palais+Royal+de+Fes",
+    embedUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.6360412968315!2d-4.996201988518437!3d34.05320611756727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4b527b09711%3A0x3e0d1029255008bd!2sPalais%20Royal!5e0!3m2!1sfr!2sma!4v1771156638030!5m2!1sfr!2sma",
   },
   "Jardin Jnan Sbil": {
     embedUrl:
@@ -118,7 +142,7 @@ const monuments: Monument[] = [
   },
   {
     name: "Médersa Bou Inania",
-    category: "Médersa",
+    category: "Médersa & Mosquée",
     description:
       "Chef-d'œuvre mérinide (1351-1356), ornée de zellige, stuc sculpté et bois de cèdre.",
     hours: "9h - 17h",
@@ -198,7 +222,7 @@ const monuments: Monument[] = [
       "École coranique mérinide du XIVe siècle, connue pour ses zelliges et son bois sculpté d’une grande finesse.",
     hours: "9h - 17h",
     duration: "30 min",
-    image: ecoleBounania,
+    image: attarin,
     details: [
       "✨ À voir : cour intérieure, zellige fin, stuc sculpté, bois ciselé.",
       "⚠️ Accès : ouvert aux visiteurs.",
@@ -213,7 +237,7 @@ const monuments: Monument[] = [
       "Ancien palais royal transformé en musée des arts traditionnels marocains, avec un magnifique jardin andalou.",
     hours: "9h - 17h",
     duration: "45 min",
-    image: museeNejjarin,
+    image: darBatha,
     details: [
       "✨ À voir : collections d’art marocain, céramiques, tapis, jardin andalou.",
       "⚠️ Accès : ouvert aux visiteurs.",
@@ -228,7 +252,7 @@ const monuments: Monument[] = [
       "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la médina.",
     hours: "9h - 18h",
     duration: "45 min",
-    image: myIdriss,
+    image: borjNord,
     details: [
       "✨ À voir : panorama sur la médina, musée des armes, architecture militaire.",
       "⚠️ Accès : ouvert aux visiteurs.",
@@ -238,12 +262,12 @@ const monuments: Monument[] = [
   },
   {
     name: "Zaouia Sidi Ahmed Tijani",
-    category: "Zaouia",
+    category: "Mausolée & Mosquée",
     description:
       "Lieu spirituel majeur de la confrérie Tijania, visité par des fidèles du monde entier.",
     hours: "Visible depuis l’extérieur",
     duration: "20–30 min",
-    image: myIdriss,
+    image: zaouiaSidiAhmedTijani,
     details: [
       "✨ À voir : mausolée, salle de prière, décorations islamiques.",
       "⚠️ Accès : intérieur réservé aux musulmans.",
@@ -258,7 +282,7 @@ const monuments: Monument[] = [
       "Entrée officielle du Palais Royal, elle est l’un des symboles architecturaux les plus impressionnants de Fès, mêlant artisanat traditionnel marocain et grandeur royale.",
     hours: "Visible depuis l’extérieur toute la journée",
     duration: "20–30 min",
-    image: museeNejjarin,
+    image: portePalais,
     details: [
       "✨ À voir : sept portes monumentales en bronze doré, zellige vert, mosaïques et bois sculpté.",
       "⚠️ Accès : intérieur du palais fermé au public.",
@@ -273,7 +297,7 @@ const monuments: Monument[] = [
       "Jardin historique entre Fès Jdid et la médina, apprécié pour ses allées ombragées et ses fontaines.",
     hours: "8h - 18h",
     duration: "20–30 min",
-    image: seffarine,
+    image: jnanSbil,
     details: [
       "✨ À voir : jardins andalous, fontaines, allées ombragées.",
       "⚠️ Accès : ouvert au public.",
@@ -288,7 +312,7 @@ const monuments: Monument[] = [
       "Mosquée historique fondée au IXe siècle, symbole des origines de Fès.",
     hours: "Visible pendant les prières",
     duration: "15 min",
-    image: mosqueeAlKaraouine,
+    image: mosqueAndalous,
     details: [
       "✨ À voir : minaret, salle de prière, architecture andalouse.",
       "⚠️ Accès : intérieur réservé aux musulmans.",
@@ -302,7 +326,7 @@ const monuments: Monument[] = [
     description: "Palais historique connu pour ses patios, jardins, stuc et zellige décoratif.",
     hours: "10h - 16h",
     duration: "15–25 min",
-    image: museeNejjarin,
+    image: palaisMnebhi,
     details: [
       "✨ À voir : patios, jardins, stuc et zellige décoratif.",
       "⚠️ Accès : ouvert aux visiteurs (selon disponibilité).",
@@ -313,28 +337,55 @@ const monuments: Monument[] = [
 ];
 
 const HeritageSection = () => {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [openMonumentName, setOpenMonumentName] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_MONUMENTS);
+  const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
 
-  const selectedMonument = openIdx !== null ? monuments[openIdx] : null;
+  const filteredMonuments = monuments.filter((monument) => {
+    if (categoryFilter === ALL_CATEGORIES) {
+      return true;
+    }
+
+    if (categoryFilter === "mosquee_mausolee") {
+      return (
+        monument.category === "Mosquée" ||
+        monument.category === "Mausolée & Mosquée" ||
+        monument.category === "Médersa & Mosquée"
+      );
+    }
+
+    if (categoryFilter === "medersa") {
+      return monument.category === "Médersa" || monument.category === "Médersa & Mosquée";
+    }
+
+    return monument.category === categoryFilter;
+  });
+
+  const selectedMonument = openMonumentName
+    ? monuments.find((monument) => monument.name === openMonumentName) ?? null
+    : null;
   const selectedMap = selectedMonument ? monumentMaps[selectedMonument.name] : null;
-  const visibleMonuments = monuments.slice(0, visibleCount);
-  const hasMoreMonuments = visibleCount < monuments.length;
+  const visibleMonuments = filteredMonuments.slice(0, visibleCount);
+  const hasMoreMonuments = visibleCount < filteredMonuments.length;
 
   useEffect(() => {
-    if (openIdx === null) {
+    if (openMonumentName === null) {
       setMapReady(false);
       return;
     }
 
-    // Render modal content first, then mount map iframe to keep UI responsive.
     const timer = window.setTimeout(() => setMapReady(true), 120);
     return () => window.clearTimeout(timer);
-  }, [openIdx]);
+  }, [openMonumentName]);
+
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_MONUMENTS);
+    setOpenMonumentName(null);
+  }, [categoryFilter]);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_STEP, monuments.length));
+    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_STEP, filteredMonuments.length));
   };
 
   return (
@@ -344,8 +395,29 @@ const HeritageSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="relative text-center mb-16"
         >
+          <div className="mb-5 flex justify-end">
+            <div className="inline-flex items-center gap-3 rounded-2xl border border-moroccan-ochre/30 bg-gradient-to-r from-card to-moroccan-sand/20 px-3 py-2 shadow-sm backdrop-blur-sm">
+              <SlidersHorizontal size={16} className="text-moroccan-ochre-dark" />
+              <span className="font-body text-sm font-semibold text-foreground">Trier</span>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger
+                  aria-label="Trier par catégorie"
+                  className="h-9 min-w-[220px] border-moroccan-ochre/30 bg-background/80 font-body text-sm"
+                >
+                  <SelectValue placeholder="Choisir une catégorie" />
+                </SelectTrigger>
+                <SelectContent className="border-moroccan-ochre/30 bg-card">
+                  {categoryFilters.map((option) => (
+                    <SelectItem key={option.value} value={option.value} className="font-body text-sm">
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
           <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">Guide Touristique</p>
           <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Patrimoine de la Médina</h2>
           <p className="font-body text-muted-foreground max-w-xl mx-auto">
@@ -362,7 +434,7 @@ const HeritageSection = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
               className="group bg-card rounded-xl overflow-hidden shadow-moroccan hover:shadow-lg transition-shadow border border-border cursor-pointer"
-              onClick={() => setOpenIdx(i)}
+              onClick={() => setOpenMonumentName(m.name)}
             >
               <div className="relative h-52 overflow-hidden">
                 <img
@@ -410,12 +482,12 @@ const HeritageSection = () => {
           </div>
         )}
 
-        {openIdx !== null && selectedMonument && (
+        {openMonumentName !== null && selectedMonument && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-3">
             <div className="relative bg-card rounded-2xl shadow-2xl max-w-lg w-full animate-fade-in">
               <button
                 className="absolute top-3 right-3 p-2 rounded-full bg-muted hover:bg-red-100 text-muted-foreground hover:text-red-600 transition-colors"
-                onClick={() => setOpenIdx(null)}
+                onClick={() => setOpenMonumentName(null)}
                 aria-label="Fermer"
                 tabIndex={0}
               >
