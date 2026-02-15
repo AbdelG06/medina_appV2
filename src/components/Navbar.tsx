@@ -1,34 +1,65 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navItems = [
-  { label: "Accueil", href: "#accueil" },
-  { label: "Patrimoine", href: "#patrimoine" },
-  { label: "Les Portes", href: "#portes" },
-  { label: "Circuits", href: "#circuits" },
-  { label: "Boutique", href: "#boutique" },
+  { label: "Accueil", to: "/" },
+  { label: "Patrimoine", to: "#patrimoine" },
+  { label: "Les Portes", to: "#portes" },
+  { label: "Circuits", to: "#circuits" },
+  { label: "Boutique", to: "#boutique" },
+  { label: "À propos", to: "/about" },
 ];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Scroll to section if on home, else navigate home then scroll
+  const handleSectionNav = (hash: string) => {
+    if (location.pathname === "/") {
+      const el = document.querySelector(hash);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/", { replace: false });
+      setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between py-3 px-4">
-        <a href="#accueil" className="font-heading text-2xl font-bold text-primary tracking-wide">
+        <Link to="/" className="font-heading text-2xl font-bold text-primary tracking-wide" style={{ textDecoration: "none" }}>
           ✦ Médina de Fès
-        </a>
+        </Link>
 
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
-              >
-                {item.label}
-              </a>
+            <li key={item.label}>
+              {item.to.startsWith("/") ? (
+                <Link
+                  to={item.to}
+                  className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+                  style={{ cursor: "pointer", textDecoration: "none" }}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleSectionNav(item.to)}
+                  className="font-body text-sm font-medium text-foreground/80 hover:text-primary transition-colors bg-transparent border-none outline-none"
+                  style={{ cursor: "pointer" }}
+                >
+                  {item.label}
+                </button>
+              )}
             </li>
           ))}
         </ul>
@@ -48,14 +79,26 @@ const Navbar = () => {
         <div className="md:hidden bg-background border-t border-border">
           <ul className="flex flex-col p-4 gap-4">
             {navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="font-body text-base text-foreground/80 hover:text-primary"
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </a>
+              <li key={item.label}>
+                {item.to.startsWith("/") ? (
+                  <Link
+                    to={item.to}
+                    className="font-body text-base text-foreground/80 hover:text-primary"
+                    onClick={() => setOpen(false)}
+                    style={{ cursor: "pointer", textDecoration: "none" }}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => { setOpen(false); handleSectionNav(item.to); }}
+                    className="font-body text-base text-foreground/80 hover:text-primary bg-transparent border-none outline-none"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {item.label}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
