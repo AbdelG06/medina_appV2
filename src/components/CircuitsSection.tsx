@@ -43,7 +43,7 @@ const circuits: Circuit[] = [
     difficulty: "Moyen",
     stops: [
       { name: "Musée Nejjarine", description: "Fondouk restauré dédié aux métiers du bois." },
-      { name: "Musée Batha", description: "Ancien palais royal devenu musée d’arts traditionnels." },
+      { name: "Musée Batha", description: "Ancien palais royal devenu musée d'arts traditionnels." },
       { name: "Tanneries Chouara", description: "Tanneries historiques aux cuves colorées." },
       { name: "Souk des Teinturiers", description: "Ateliers artisanaux de teinturerie." },
       { name: "Place Seffarine", description: "Place animée par les dinandiers." },
@@ -53,7 +53,7 @@ const circuits: Circuit[] = [
   },
   {
     name: "Circuit Historique",
-    theme: "🏛 Histoire",
+    theme: "🏛️ Histoire",
     duration: "Environ 4h",
     distance: "~ 4.5 km",
     difficulty: "Moyen",
@@ -111,7 +111,7 @@ const circuits: Circuit[] = [
       { name: "Palais Mnebhi", description: "Palais traditionnel richement décoré." },
       { name: "Musée Nejjarine", description: "Fondouk restauré dédié aux métiers du bois." },
       { name: "Zaouïa Moulay Idriss II", description: "Sanctuaire majeur dédié au fondateur de Fès." },
-      { name: "Médersa Al-Attarine", description: "Zellige et stuc d’une grande finesse." },
+      { name: "Médersa Al-Attarine", description: "Zellige et stuc d'une grande finesse." },
       { name: "Mosquée Al Quaraouiyine", description: "Mosquée-université historique." },
       { name: "Zaouïa de Sidi Ahmed Tijani", description: "Sanctuaire spirituel de la Tijania." },
       { name: "Seffarine", description: "Place animée par les dinandiers." },
@@ -171,7 +171,9 @@ const CircuitsSection = () => {
                 </div>
 
                 <div className="space-y-3">
-                  <p className="font-body text-xs uppercase tracking-wider text-muted-foreground font-semibold">Étapes du parcours</p>
+                  <p className="font-body text-xs uppercase tracking-wider text-muted-foreground font-semibold">
+                    Étapes du parcours
+                  </p>
                   {(c.name === "Circuit complet" ? c.stops.slice(0, 6) : c.stops).map((stop, j) => (
                     <div key={`${c.name}-${stop.name}`} className="flex items-center gap-3 text-sm text-foreground">
                       <span className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-semibold text-muted-foreground">

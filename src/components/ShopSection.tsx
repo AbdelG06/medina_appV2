@@ -1,4 +1,14 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import belghaImage from "../assets/belgha.jpg";
+import caftanImage from "../assets/caftan.jpg";
+import chebakiaImage from "../assets/chebakia.jpg";
+import cuivreImage from "../assets/Cuivre.jpg";
+import epicesImage from "../assets/epices.jpg";
+import huileImage from "../assets/huile.jpg";
+import mielImage from "../assets/Miel.jpg";
+import sacImage from "../assets/sac.jpg";
+import tapisImage from "../assets/Tapis.jpg";
+import zelligeImage from "../assets/zelige.jpg";
 
 const categories = [
   {
@@ -9,14 +19,14 @@ const categories = [
         artisan: "Maître Hassan, Souk Sabbaghin",
         price: "150 MAD",
         description: "Babouches traditionnelles en cuir tanné naturellement, cousues à la main.",
-        image: "https://images.unsplash.com/photo-1590073242678-70ee3fc28e8e?w=400&h=400&fit=crop",
+        image: belghaImage,
       },
       {
         name: "Sac en cuir",
-        artisan: "Maître Youssef, Tanneries Chouara",
+        artisan: "Zinelabidin, kissariat al kifah",
         price: "250 MAD",
         description: "Sac bandoulière en cuir de chèvre tanné traditionnellement, teinture végétale.",
-        image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop",
+        image: sacImage,
       },
     ],
   },
@@ -28,14 +38,14 @@ const categories = [
         artisan: "Maître Ahmed, Place Seffarine",
         price: "350 MAD",
         description: "Plateau décoratif gravé à la main avec des motifs géométriques traditionnels.",
-        image: "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=400&h=400&fit=crop",
+        image: cuivreImage,
       },
       {
         name: "Zellige artisanal",
         artisan: "Atelier Benjelloun, Fès el-Bali",
         price: "80 MAD / pièce",
         description: "Carreau de zellige taillé et émaillé à la main, motif étoile à 8 branches.",
-        image: "https://images.unsplash.com/photo-1580752300992-559f8e11aed2?w=400&h=400&fit=crop",
+        image: zelligeImage,
       },
     ],
   },
@@ -47,14 +57,14 @@ const categories = [
         artisan: "Épicerie El Attarine",
         price: "30 MAD / sachet",
         description: "Mélange d'épices locales pour tajines et couscous.",
-        image: "https://images.unsplash.com/photo-1502741338009-cac2772e18bc?w=400&h=400&fit=crop",
+        image: epicesImage,
       },
       {
         name: "Huile d'argan",
         artisan: "Coopérative Argania",
         price: "120 MAD / 250ml",
         description: "Huile d'argan pure, pressée à froid, idéale cuisine et cosmétique.",
-        image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?w=400&h=400&fit=crop",
+        image: huileImage,
       },
     ],
   },
@@ -66,14 +76,14 @@ const categories = [
         artisan: "Apiculteur Fassi",
         price: "90 MAD / pot",
         description: "Miel artisanal récolté dans la région de Fès.",
-        image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?w=400&h=400&fit=crop",
+        image: mielImage,
       },
       {
         name: "Pâtisseries marocaines",
-        artisan: "Pâtisserie La Medina",
+        artisan: "Pâtisserie La Médina",
         price: "60 MAD / boîte",
         description: "Assortiment de cornes de gazelle, briouates, chebakia...",
-        image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop",
+        image: chebakiaImage,
       },
     ],
   },
@@ -82,28 +92,30 @@ const categories = [
     products: [
       {
         name: "Tapis berbère",
-        artisan: "Coopérative Ain Nokbi",
+        artisan: "Coopérative Aïn Nokbi",
         price: "1 200 MAD",
         description: "Tapis noué main en laine naturelle, motifs tribaux du Moyen Atlas.",
-        image: "https://images.unsplash.com/photo-1600166898405-da9535204843?w=400&h=400&fit=crop",
+        image: tapisImage,
       },
       {
         name: "Caftan brodé",
         artisan: "Atelier Fassi, Derb Tazi",
         price: "2 500 MAD",
         description: "Caftan en soie brodé à la main avec fil d'or, travail de plusieurs semaines.",
-        image: "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=400&fit=crop",
+        image: caftanImage,
       },
     ],
   },
 ];
 
 const ShopSection = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <section id="boutique" className="py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-6"
@@ -120,22 +132,21 @@ const ShopSection = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="flex items-center justify-center gap-2 mb-12"
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-secondary/20 text-secondary font-body text-xs font-semibold border border-secondary/30">
-            ✓ Prix fixes et transparents
+            Prix fixes et transparents
           </span>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary font-body text-xs font-semibold border border-primary/20">
-            ✓ Artisans vérifiés
+          <span className="inline-block px-4 py-1.5 rounded-full bg-moroccan-ochre/20 text-moroccan-ochre-dark font-body text-xs font-semibold border border-moroccan-ochre/30">
+            Qualité artisanale
           </span>
         </motion.div>
 
-        {/* Rubriques par catégorie */}
         <div className="space-y-16">
-          {categories.map((cat, idx) => (
+          {categories.map((cat) => (
             <div key={cat.name}>
               <h3 className="font-heading text-2xl md:text-3xl font-bold text-moroccan-ochre-dark mb-6 text-left">
                 {cat.name}
@@ -144,10 +155,10 @@ const ShopSection = () => {
                 {cat.products.map((p, i) => (
                   <motion.div
                     key={p.name}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
+                    transition={shouldReduceMotion ? { duration: 0 } : { delay: i * 0.04, duration: 0.4 }}
                     className="bg-background rounded-xl overflow-hidden border border-border hover:shadow-moroccan transition-shadow group"
                   >
                     <div className="aspect-square overflow-hidden">
@@ -156,17 +167,18 @@ const ShopSection = () => {
                         alt={p.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="p-5">
                       <div className="flex items-start justify-between mb-2">
                         <h4 className="font-heading text-lg font-semibold text-foreground">{p.name}</h4>
-                        <span className="font-heading text-lg font-bold text-primary whitespace-nowrap ml-2">{p.price}</span>
+                        <span className="font-heading text-lg font-bold text-primary whitespace-nowrap ml-2">
+                          {p.price}
+                        </span>
                       </div>
+                      <p className="font-body text-xs text-moroccan-ochre-dark mb-2">{p.artisan}</p>
                       <p className="font-body text-sm text-muted-foreground mb-3">{p.description}</p>
-                      <p className="font-body text-xs text-moroccan-ochre-dark">
-                        👤 {p.artisan}
-                      </p>
                     </div>
                   </motion.div>
                 ))}

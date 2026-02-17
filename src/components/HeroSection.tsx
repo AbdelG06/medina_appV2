@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 const HeroSection = () => {
   return (
     <section id="accueil" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image */}
       <div className="absolute inset-0">
         <img
           src={heroImg}
@@ -14,7 +13,6 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-background" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center pt-20">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -31,7 +29,7 @@ const HeroSection = () => {
             La plus ancienne médina du monde
           </p>
           <p className="font-body text-base md:text-lg text-moroccan-cream/70 max-w-xl mx-auto mb-10">
-            Fondée au VIIIe siècle, la médina de Fès est un labyrinthe vivant de 9 400 ruelles, 
+            Fondée au VIIIe siècle, la médina de Fès est un labyrinthe vivant de 9 400 ruelles,
             gardienne de 12 siècles d'histoire, d'artisanat et de spiritualité.
           </p>
         </motion.div>
@@ -57,7 +55,6 @@ const HeroSection = () => {
         </motion.div>
       </div>
 
-      {/* Decorative bottom arch */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 80" fill="none" className="w-full">
           <path

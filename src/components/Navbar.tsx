@@ -17,7 +17,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Scroll to section if on home, else navigate home then scroll
+  // Scroll to section if on home, else navigate home then scroll.
   const handleSectionNav = (hash: string) => {
     if (location.pathname === "/") {
       const el = document.querySelector(hash);
@@ -32,10 +32,16 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between py-3 px-4">
         <Link to="/" className="font-heading text-2xl font-bold text-primary tracking-wide" style={{ textDecoration: "none" }}>
-          ✦ Médina de Fès
+          <span className="flex flex-col leading-tight">
+            <span className="inline-flex items-center gap-2 text-moroccan-ochre-dark">
+              <span className="text-base">✦</span>
+              <span className="text-2xl font-bold">Médina de Fès</span>
+            </span>
+            <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Fès el-Bali</span>
+          </span>
         </Link>
 
         {/* Desktop */}
@@ -65,11 +71,7 @@ const Navbar = () => {
         </ul>
 
         {/* Mobile toggle */}
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
+        <button className="md:hidden text-foreground" onClick={() => setOpen(!open)} aria-label="Menu">
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -92,7 +94,10 @@ const Navbar = () => {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => { setOpen(false); handleSectionNav(item.to); }}
+                    onClick={() => {
+                      setOpen(false);
+                      handleSectionNav(item.to);
+                    }}
                     className="font-body text-base text-foreground/80 hover:text-primary bg-transparent border-none outline-none"
                     style={{ cursor: "pointer" }}
                   >

@@ -1,36 +1,131 @@
-import React from "react";
+import React, { useState } from "react";
 
-// Example police posts (replace with real coordinates if available)
-const policePosts = [
-  { name: "Poste Police Bab Boujloud", lat: 34.0622, lng: -4.9836 },
-  { name: "Poste Police Rcif", lat: 34.0605, lng: -4.9782 },
-  { name: "Poste Police Place Seffarine", lat: 34.0631, lng: -4.9747 },
+const emergencyContacts = [
+  { label: "Police", number: "19", detail: "Interventions et sécurité" },
+  { label: "Pompiers", number: "15", detail: "Incendies et secours" },
+  { label: "Protection Civile", number: "15", detail: "Secours et sauvetage" },
+  { label: "Ambulance", number: "15", detail: "Urgences médicales" },
 ];
 
-export const EmergencyMapSection: React.FC = () => {
+const filterOptions = [
+  {
+    id: "police",
+    label: "Police",
+    icon: "🚔",
+    className: "bg-moroccan-blue text-primary-foreground",
+    mapSrc: "https://www.google.com/maps?q=police+fes&output=embed",
+    link: "https://www.google.com/maps/search/police+fes",
+  },
+  {
+    id: "hospital",
+    label: "Hôpitaux",
+    icon: "🏥",
+    className: "bg-moroccan-terracotta text-primary-foreground",
+    mapSrc: "https://www.google.com/maps?q=hopital+fes&output=embed",
+    link: "https://www.google.com/maps/search/hopital+fes",
+  },
+  {
+    id: "parking",
+    label: "Parkings",
+    icon: "🅿️",
+    className: "bg-moroccan-green-light text-primary-foreground",
+    mapSrc: "https://www.google.com/maps?q=parking+fes&output=embed",
+    link: "https://www.google.com/maps/search/parking+fes",
+  },
+];
+
+const EmergencyMapSection: React.FC = () => {
+  const [activeFilter, setActiveFilter] = useState<string>("police");
+  const activeConfig = filterOptions.find((filter) => filter.id === activeFilter) ?? filterOptions[0];
+
   return (
-    <section className="py-16 bg-red-50 border-t border-red-200" id="urgence-map">
+    <section className="py-20 bg-card border-t border-border" id="urgence-map">
       <div className="container mx-auto px-4">
-        <h2 className="font-heading text-2xl md:text-3xl font-bold text-red-700 mb-6 text-center">
-          Urgence : Postes de Police dans la Médina
-        </h2>
-        <div className="w-full h-96 rounded-xl overflow-hidden border border-red-200 bg-white flex items-center justify-center mb-6">
-          {/* Static map with markers (replace with real map if needed) */}
-          <img
-            src="https://maps.googleapis.com/maps/api/staticmap?center=34.0622,-4.9836&zoom=15&size=700x350&maptype=roadmap&markers=color:red%7Clabel:P%7C34.0622,-4.9836&markers=color:red%7Clabel:P%7C34.0605,-4.9782&markers=color:red%7Clabel:P%7C34.0631,-4.9747&key=YOUR_API_KEY"
-            alt="Carte des postes de police de la médina"
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+        <div className="text-center mb-10">
+          <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">Urgence</p>
+          <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Carte des services d'urgence à Fès
+          </h2>
+          <p className="font-body text-muted-foreground max-w-2xl mx-auto">
+            Repérez rapidement les postes de police, hôpitaux et parkings proches de la médina.
+          </p>
         </div>
-        <ul className="flex flex-wrap gap-6 justify-center">
-          {policePosts.map((post) => (
-            <li key={post.name} className="bg-white border border-red-200 rounded-lg px-4 py-2 shadow text-red-700 font-body text-sm">
-              <span className="font-bold">{post.name}</span>
-            </li>
-          ))}
-        </ul>
+
+        <div className="grid lg:grid-cols-[1.05fr_1.55fr] gap-8 items-stretch">
+          <div className="bg-background border border-border rounded-2xl p-6 shadow-moroccan">
+            <h3 className="font-heading text-2xl font-bold text-moroccan-ochre-dark mb-3">Numéros utiles</h3>
+            <p className="font-body text-sm text-muted-foreground mb-6">
+              Gardez ces contacts sous la main en cas d'urgence immédiate.
+            </p>
+            <div className="space-y-3">
+              {emergencyContacts.map((contact) => (
+                <a
+                  key={contact.label}
+                  href={`tel:${contact.number}`}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm font-body text-foreground hover:bg-muted transition-colors"
+                >
+                  <span>
+                    <span className="font-semibold">{contact.label}</span>
+                    <span className="block text-xs text-muted-foreground">{contact.detail}</span>
+                  </span>
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    {contact.number}
+                  </span>
+                </a>
+              ))}
+            </div>
+            <p className="mt-6 text-xs font-body text-muted-foreground">
+              Astuce: partagez votre position GPS lors de l'appel pour gagner du temps.
+            </p>
+          </div>
+
+          <div className="bg-background border border-border rounded-2xl p-4 md:p-6 shadow-moroccan">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {filterOptions.map((filter) => {
+                const isActive = activeFilter === filter.id;
+                return (
+                  <button
+                    key={filter.id}
+                    type="button"
+                    onClick={() => setActiveFilter(filter.id)}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition ${
+                      isActive ? filter.className : "bg-muted text-foreground hover:bg-muted/70"
+                    }`}
+                  >
+                    <span>{filter.icon}</span>
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="relative w-full h-[420px] rounded-xl overflow-hidden border border-border bg-muted/30">
+              <iframe
+                key={activeConfig.id}
+                title={`Carte ${activeConfig.label} à Fès`}
+                src={activeConfig.mapSrc}
+                className="w-full h-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+            <p className="mt-4 text-xs font-body text-muted-foreground">
+              Filtrez les services pour trouver rapidement l'aide la plus proche.{" "}
+              <a
+                href={activeConfig.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline-offset-2 hover:underline"
+              >
+                Ouvrir en plein écran
+              </a>
+              .
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
+
+export default EmergencyMapSection;

@@ -37,27 +37,27 @@ const LOAD_MORE_STEP = 4;
 const ALL_CATEGORIES = "all";
 
 const categoryFilters = [
-  { value: ALL_CATEGORIES, label: "Toutes catégories" },
-  { value: "mosquee_mausolee", label: "Mosquée & Mausolée" },
-  { value: "medersa", label: "Médersa (école)" },
+  { value: ALL_CATEGORIES, label: "Toutes catgories" },
+  { value: "mosquee_mausolee", label: "Mosque & Mausole" },
+  { value: "medersa", label: "Mdersa (cole)" },
   { value: "Artisanat", label: "Artisanat" },
-  { value: "Musée", label: "Musée" },
+  { value: "Muse", label: "Muse" },
   { value: "Place", label: "Place" },
   { value: "Jardin", label: "Jardin" },
   { value: "Palais", label: "Palais" },
 ];
 
 const categoryColors: Record<string, string> = {
-  Mosquée: "bg-primary text-primary-foreground",
-  Médersa: "bg-secondary text-secondary-foreground",
-  "Médersa & Mosquée": "bg-secondary text-secondary-foreground",
+  Mosque: "bg-primary text-primary-foreground",
+  Mdersa: "bg-secondary text-secondary-foreground",
+  "Mdersa & Mosque": "bg-secondary text-secondary-foreground",
   Artisanat: "bg-moroccan-ochre text-accent-foreground",
-  Musée: "bg-moroccan-terracotta text-primary-foreground",
-  "Palais & Musée": "bg-moroccan-terracotta text-primary-foreground",
+  Muse: "bg-moroccan-terracotta text-primary-foreground",
+  "Palais & Muse": "bg-moroccan-terracotta text-primary-foreground",
   Place: "bg-moroccan-green-light text-primary-foreground",
-  "Mausolée & Mosquée": "bg-primary/80 text-primary-foreground",
+  "Mausole & Mosque": "bg-primary/80 text-primary-foreground",
   Forteresse: "bg-moroccan-blue-light text-primary-foreground",
-  Zaouïa: "bg-secondary/90 text-secondary-foreground",
+  Zaoua: "bg-secondary/90 text-secondary-foreground",
   Zaouia: "bg-secondary/90 text-secondary-foreground",
   Fondouk: "bg-moroccan-blue-light text-primary-foreground",
   "Maison traditionnelle": "bg-moroccan-green-light text-primary-foreground",
@@ -66,11 +66,11 @@ const categoryColors: Record<string, string> = {
 };
 
 const monumentMaps: Record<string, MapConfig> = {
-  "Mosquée Al Quaraouiyine": {
+  "Mosque Al Quaraouiyine": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.1788237017468!2d-4.9733667!3d34.064929899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff359c4e30d3f%3A0x8614a8beafd0df83!2sMosqu%C3%A9e%20et%20Universit%C3%A9%20Karaouiyne!5e0!3m2!1sfr!2sma!4v1771095606280!5m2!1sfr!2sma",
   },
-  "Médersa Bou Inania": {
+  "Mdersa Bou Inania": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3305.2821094603573!2d-4.9854216!3d34.0622818!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4af477e648d%3A0x957eb0f34b372714!2sM%C3%A9dersa%20Bou%20Inania%20de%20F%C3%A8s!5e0!3m2!1sfr!2sma!4v1771111179687!5m2!1sfr!2sma",
   },
@@ -78,11 +78,11 @@ const monumentMaps: Record<string, MapConfig> = {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.135459286517!2d-4.975892749603597!3d34.06604164800118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff391122c8bdf%3A0x21a8c7fe5f3dbd4e!2sTannerie%20Chouara!5e0!3m2!1sfr!2sma!4v1771096063933!5m2!1sfr!2sma",
   },
-  "Musée Nejjarine": {
+  "Muse Nejjarine": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.1855591984913!2d-4.978484988518081!3d34.06475721695711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff3581109a683%3A0x6a46e59966ccb7bf!2sFondouk%20Nejjarine!5e0!3m2!1sfr!2sma!4v1771096095794!5m2!1sfr!2sma",
   },
-  "Mausolée de Moulay Idriss II": {
+  "Mausole de Moulay Idriss II": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.1818876212487!2d-4.979587549603911!3d34.06485134806537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff312db5277c1%3A0x2958a56987fabcab!2sMausol%C3%A9e%20de%20Moulay%20Idriss%20II!5e0!3m2!1sfr!2sma!4v1771096174931!5m2!1sfr!2sma",
   },
@@ -90,11 +90,11 @@ const monumentMaps: Record<string, MapConfig> = {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.1818876212487!2d-4.979587549603911!3d34.06485134806537!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff359dfd40ff1%3A0x166cc10f0b6fe712!2sPlace%20Seffarine!5e0!3m2!1sfr!2sma!4v1771096217303!5m2!1sfr!2sma",
   },
-  "Médersa Al-Attarine": {
+  "Mdersa Al-Attarine": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.171203141798!2d-4.9761914242829866!3d34.06512527315204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff359ca2f5575%3A0x694d0781fb7d3f1f!2sM%C3%A9dersa%20Attarine!5e0!3m2!1sfr!2sma!4v1771118278891!5m2!1sfr!2sma",
   },
-  "Musée Batha": {
+  "Muse Batha": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.364090259367!2d-4.983066899999999!3d34.0601798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4aed90b70d3%3A0xc44a61c2c91a5c87!2sMus%C3%A9e%20batha!5e0!3m2!1sfr!2sma!4v1771156528030!5m2!1sfr!2sma",
   },
@@ -106,7 +106,7 @@ const monumentMaps: Record<string, MapConfig> = {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13220.498844445885!2d-4.983701629411644!3d34.066317197622226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9f8b688fd6c767%3A0x9bd424c537944bf6!2sMausol%C3%A9e%20de%20Sidi%20Ahmed%20al-Tijani!5e0!3m2!1sfr!2sma!4v1771118369859!5m2!1sfr!2sma",
   },
-  "Porte du Palais Royal de Fès": {
+  "Porte du Palais Royal de Fs": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.6360412968315!2d-4.996201988518437!3d34.05320611756727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4b527b09711%3A0x3e0d1029255008bd!2sPalais%20Royal!5e0!3m2!1sfr!2sma!4v1771156638030!5m2!1sfr!2sma",
   },
@@ -114,7 +114,7 @@ const monumentMaps: Record<string, MapConfig> = {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13221.548549324909!2d-4.99856847941542!3d34.059588849073926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff4ae09473177%3A0xd1011727d6b18241!2sJnan%20Sbil!5e0!3m2!1sfr!2sma!4v1771118562315!5m2!1sfr!2sma",
   },
-  "Mosquée des Andalous": {
+  "Mosque des Andalous": {
     embedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13220.978565667523!2d-4.978406479413356!3d34.063242448285656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd9ff35068cd206f%3A0xdea6a68a05525019!2sMosqu%C3%A9e%20des%20Andalous!5e0!3m2!1sfr!2sma!4v1771118595825!5m2!1sfr!2sma",
   },
@@ -126,214 +126,214 @@ const monumentMaps: Record<string, MapConfig> = {
 
 const monuments: Monument[] = [
   {
-    name: "Mosquée Al Quaraouiyine",
-    category: "Mosquée",
+    name: "Mosque Al Quaraouiyine",
+    category: "Mosque",
     description:
-      "Fondée en 859, c'est la plus ancienne université du monde encore en activité. Un joyau de l'architecture islamique.",
-    hours: "Visible de l'extérieur",
+      "Fonde en 859, c'est la plus ancienne universit du monde encore en activit. Un joyau de l'architecture islamique.",
+    hours: "Visible de l'extrieur",
     duration: "30 min",
     image: mosqueeAlKaraouine,
     details: [
-      "✨ À voir : salle de prière monumentale, bibliothèque historique, zellige et bois sculpté.",
-      "⚠️ Accès : intérieur réservé aux musulmans.",
-      "🕒 Horaires : visible pendant les prières.",
-      "📍 Lieu : quartier central de la médina.",
+      "  voir : salle de prire monumentale, bibliothque historique, zellige et bois sculpt.",
+      " Accs : intrieur rserv aux musulmans.",
+      " Horaires : visible pendant les prires.",
+      " Lieu : quartier central de la mdina.",
     ],
   },
   {
-    name: "Médersa Bou Inania",
-    category: "Médersa & Mosquée",
+    name: "Mdersa Bou Inania",
+    category: "Mdersa & Mosque",
     description:
-      "Chef-d'œuvre mérinide (1351-1356), ornée de zellige, stuc sculpté et bois de cèdre.",
+      "Chef-d'uvre mrinide (1351-1356), orne de zellige, stuc sculpt et bois de cdre.",
     hours: "9h - 17h",
     duration: "45 min",
     image: ecoleBounania,
     details: [
-      "✨ À voir : patio central, fontaine, boiseries et stucs finement sculptés.",
-       "⚠️ Accès : intérieur réservé aux musulmans.Prix entrée générale : 10 dh",
-      "🕒 Horaires : 8h–18h.",
-      "⏳ Durée : 15–30 min.",
-      "📍 Lieu : rue Talaa Kebira, médina.",
+      "  voir : patio central, fontaine, boiseries et stucs finement sculpts.",
+       " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 10 dh",
+      " Horaires : 8h18h.",
+      " Dure : 1530 min.",
+      " Lieu : rue Talaa Kebira, mdina.",
     ],
   },
   {
     name: "Tanneries Chouara",
     category: "Artisanat",
     description:
-      "Les plus anciennes tanneries du monde, où le cuir est traité selon des méthodes ancestrales.",
+      "Les plus anciennes tanneries du monde, o le cuir est trait selon des mthodes ancestrales.",
     hours: "8h - 18h",
     duration: "1h",
     image: tannerie,
     details: [
-      "✨ À voir : bacs de teinture, processus artisanal, terrasses d'observation.",
-      "⚠️ Odeur forte, prévoir un foulard.",
-      "⏳ Durée : 15–45 min.",
-      "📍 Lieu : quartier Blida, médina.",
+      "  voir : bacs de teinture, processus artisanal, terrasses d'observation.",
+      " Odeur forte, prvoir un foulard.",
+      " Dure : 1545 min.",
+      " Lieu : quartier Blida, mdina.",
     ],
   },
   {
-    name: "Musée Nejjarine",
-    category: "Musée",
+    name: "Muse Nejjarine",
+    category: "Muse",
     description:
-      "Ancien fondouk restauré, dédié aux arts et métiers du bois avec terrasse panoramique.",
+      "Ancien fondouk restaur, ddi aux arts et mtiers du bois avec terrasse panoramique.",
     hours: "10h - 17h",
     duration: "1h",
     image: museeNejjarin,
     details: [
-      "✨ À voir : architecture traditionnelle, fontaine Nejjarine, artisanat du bois.",
-      "⚠️ Accès : intérieur réservé aux musulmans.Prix entrée générale : 20 dh",
-      "🕒 Horaires : 10h–17h.",
-      "⏳ Durée : 30–70 min.",
-      "📍 Lieu : place Nejjarine, médina.",
+      "  voir : architecture traditionnelle, fontaine Nejjarine, artisanat du bois.",
+      " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 20 dh",
+      " Horaires : 10h17h.",
+      " Dure : 3070 min.",
+      " Lieu : place Nejjarine, mdina.",
     ],
   },
   {
-    name: "Mausolée de Moulay Idriss II",
-    category: "Mausolée & Mosquée",
+    name: "Mausole de Moulay Idriss II",
+    category: "Mausole & Mosque",
     description:
-      "Lieu spirituel majeur, dédié au fondateur de Fès, à l'architecture raffinée.",
-    hours: "Journée",
+      "Lieu spirituel majeur, ddi au fondateur de Fs,  l'architecture raffine.",
+    hours: "Journe",
     duration: "30 min",
     image: myIdriss,
     details: [
-      "✨ À voir : porte monumentale, zellige, stuc et ambiance spirituelle.",
-      "⚠️ Accès : intérieur réservé aux musulmans.",
-      "⏳ Durée : 15–20 min.",
-      "📍 Lieu : quartier central, près de la place Seffarine.",
+      "  voir : porte monumentale, zellige, stuc et ambiance spirituelle.",
+      " Accs : intrieur rserv aux musulmans.",
+      " Dure : 1520 min.",
+      " Lieu : quartier central, prs de la place Seffarine.",
     ],
   },
   {
     name: "Place Seffarine",
     category: "Place",
     description:
-      "Place historique célèbre pour ses dinandiers et son ambiance artisanale unique.",
-    hours: "Accès libre",
+      "Place historique clbre pour ses dinandiers et son ambiance artisanale unique.",
+    hours: "Accs libre",
     duration: "20 min",
     image: seffarine,
     details: [
-      "✨ À voir : ateliers de cuivre, ambiance sonore, fontaine centrale.",
-      "🕒 Horaires : accès libre.",
-      "⏳ Durée : 10–20 min.",
-      "📍 Lieu : près de la Médersa Seffarine.",
+      "  voir : ateliers de cuivre, ambiance sonore, fontaine centrale.",
+      " Horaires : accs libre.",
+      " Dure : 1020 min.",
+      " Lieu : prs de la Mdersa Seffarine.",
     ],
   },
   {
-    name: "Médersa Al-Attarine",
-    category: "Médersa",
+    name: "Mdersa Al-Attarine",
+    category: "Mdersa",
     description:
-      "École coranique mérinide du XIVe siècle, connue pour ses zelliges et son bois sculpté d’une grande finesse.",
+      "cole coranique mrinide du XIVe sicle, connue pour ses zelliges et son bois sculpt dune grande finesse.",
     hours: "9h - 17h",
     duration: "30 min",
     image: attarin,
     details: [
-      "✨ À voir : cour intérieure, zellige fin, stuc sculpté, bois ciselé.",
-      "⚠️ Accès : intérieur réservé aux musulmans.Prix entrée générale : 20 dh",
-      "🕒 Horaires : 9h – 17h.",
-      "📍 Lieu : près de la place Seffarine, médina de Fès.",
+      "  voir : cour intrieure, zellige fin, stuc sculpt, bois cisel.",
+      " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 20 dh",
+      " Horaires : 9h  17h.",
+      " Lieu : prs de la place Seffarine, mdina de Fs.",
     ],
   },
   {
-    name: "Musée Batha",
-    category: "Musée",
+    name: "Muse Batha",
+    category: "Muse",
     description:
-      "Ancien palais royal transformé en musée des arts traditionnels marocains, avec un magnifique jardin andalou.",
+      "Ancien palais royal transform en muse des arts traditionnels marocains, avec un magnifique jardin andalou.",
     hours: "10h - 18h",
     duration: "45 min",
     image: darBatha,
     details: [
-      "✨ À voir : collections d’art marocain, céramiques, tapis, jardin andalou.",
-      "⚠️ Accès : ouvert aux visiteurs, Prix entrée générale : 60 dh",
-      "🕒 Horaires : 10h – 18h.",
-      "📍 Lieu : avenue des Mérinides, Fès.",
+      "  voir : collections dart marocain, cramiques, tapis, jardin andalou.",
+      " Accs : ouvert aux visiteurs, Prix entre gnrale : 60 dh",
+      " Horaires : 10h  18h.",
+      " Lieu : avenue des Mrinides, Fs.",
     ],
   },
   {
     name: "Borj Nord",
     category: "Forteresse",
     description:
-      "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la médina.",
+      "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la mdina.",
     hours: "9h - 18h",
     duration: "45 min",
     image: borjNord,
     details: [
-      "✨ À voir : panorama sur la médina, musée des armes, architecture militaire.",
-      "⚠️ Accès : ouvert aux visiteurs, Prix entrée générale : 10 dh",
-      "🕒 Horaires : De 9h – 12h et de 15h à 18h.",
-      "📍 Lieu : Oued Fejjaline, 5 Ave du Batha, Fès.",
+      "  voir : panorama sur la mdina, muse des armes, architecture militaire.",
+      " Accs : ouvert aux visiteurs, Prix entre gnrale : 10 dh",
+      " Horaires : De 9h  12h et de 15h  18h.",
+      " Lieu : Oued Fejjaline, 5 Ave du Batha, Fs.",
     ],
   },
   {
     name: "Zaouia Sidi Ahmed Tijani",
-    category: "Mausolée & Mosquée",
+    category: "Mausole & Mosque",
     description:
-      "Lieu spirituel majeur de la confrérie Tijania, visité par des fidèles du monde entier.",
-    hours: "Visible depuis l’extérieur",
-    duration: "20–30 min",
+      "Lieu spirituel majeur de la confrrie Tijania, visit par des fidles du monde entier.",
+    hours: "Visible depuis lextrieur",
+    duration: "2030 min",
     image: zaouiaSidiAhmedTijani,
     details: [
-      "✨ À voir : mausolée, salle de prière, décorations islamiques.",
-      "⚠️ Accès : intérieur réservé aux musulmans.",
-      "🕒 Horaires : visible depuis l’extérieur.",
-      "📍 Lieu : Rue Tafilalete, médina de Fès.",
+      "  voir : mausole, salle de prire, dcorations islamiques.",
+      " Accs : intrieur rserv aux musulmans.",
+      " Horaires : visible depuis lextrieur.",
+      " Lieu : Rue Tafilalete, mdina de Fs.",
     ],
   },
   {
-    name: "Porte du Palais Royal de Fès",
+    name: "Porte du Palais Royal de Fs",
     category: "Palais",
     description:
-      "Entrée officielle du Palais Royal, elle est l’un des symboles architecturaux les plus impressionnants de Fès, mêlant artisanat traditionnel marocain et grandeur royale.",
-    hours: "Visible depuis l’extérieur toute la journée",
-    duration: "20–30 min",
+      "Entre officielle du Palais Royal, elle est lun des symboles architecturaux les plus impressionnants de Fs, mlant artisanat traditionnel marocain et grandeur royale.",
+    hours: "Visible depuis lextrieur toute la journe",
+    duration: "2030 min",
     image: portePalais,
     details: [
-      "✨ À voir : sept portes monumentales en bronze doré, zellige vert, mosaïques et bois sculpté.",
-      "⚠️ Accès : intérieur du palais fermé au public.",
-      "🕒 Horaires : visible depuis l’extérieur toute la journée.",
-      "📍 Lieu : place des Alaouites, Fès Jdid.",
+      "  voir : sept portes monumentales en bronze dor, zellige vert, mosaques et bois sculpt.",
+      " Accs : intrieur du palais ferm au public.",
+      " Horaires : visible depuis lextrieur toute la journe.",
+      " Lieu : place des Alaouites, Fs Jdid.",
     ],
   },
   {
     name: "Jardin Jnan Sbil",
     category: "Jardin",
     description:
-      "Jardin historique entre Fès Jdid et la médina, apprécié pour ses allées ombragées et ses fontaines.",
+      "Jardin historique entre Fs Jdid et la mdina, apprci pour ses alles ombrages et ses fontaines.",
     hours: "8h - 19h",
-    duration: "20–30 min",
+    duration: "2030 min",
     image: jnanSbil,
     details: [
-      "✨ À voir : jardins andalous, fontaines, allées ombragées.",
-      "⚠️ Accès : ouvert au public (Gratuit).",
-      "🕒 Horaires : 8h – 19h.",
-      "📍 Lieu : entre Fès Jdid et la médina.",
+      "  voir : jardins andalous, fontaines, alles ombrages.",
+      " Accs : ouvert au public (Gratuit).",
+      " Horaires : 8h  19h.",
+      " Lieu : entre Fs Jdid et la mdina.",
     ],
   },
   {
-    name: "Mosquée des Andalous",
-    category: "Mosquée",
+    name: "Mosque des Andalous",
+    category: "Mosque",
     description:
-      "Mosquée historique fondée au IXe siècle, symbole des origines de Fès.",
-    hours: "Visible pendant les prières",
+      "Mosque historique fonde au IXe sicle, symbole des origines de Fs.",
+    hours: "Visible pendant les prires",
     duration: "15 min",
     image: mosqueAndalous,
     details: [
-      "✨ À voir : minaret, salle de prière, architecture andalouse.",
-      "⚠️ Accès : intérieur réservé aux musulmans.",
-      "🕒 Horaires : visible pendant les prières.",
-      "📍 Lieu : quartier des Andalous, médina de Fès.",
+      "  voir : minaret, salle de prire, architecture andalouse.",
+      " Accs : intrieur rserv aux musulmans.",
+      " Horaires : visible pendant les prires.",
+      " Lieu : quartier des Andalous, mdina de Fs.",
     ],
   },
   {
     name: "Palais Mnebhi",
     category: "Palais",
-    description: "Palais historique connu pour ses patios, jardins, stuc et zellige décoratif.",
+    description: "Palais historique connu pour ses patios, jardins, stuc et zellige dcoratif.",
     hours: "10h - 16h",
-    duration: "15 – 25 min",
+    duration: "15  25 min",
     image: palaisMnebhi,
     details: [
-      "✨ À voir : patios, jardins, stuc et zellige décoratif.",
-      "⚠️ Accès : ouvert aux visiteurs (selon disponibilité & Réservation).",
-      "🕒 Horaires : 10h – 16h.",
-      "📍 Lieu : Rue Souiket Ben Safi, médina de Fès.",
+      "  voir : patios, jardins, stuc et zellige dcoratif.",
+      " Accs : ouvert aux visiteurs (selon disponibilit & Rservation).",
+      " Horaires : 10h  16h.",
+      " Lieu : Rue Souiket Ben Safi, mdina de Fs.",
     ],
   },
 ];
@@ -351,14 +351,14 @@ const HeritageSection = () => {
 
     if (categoryFilter === "mosquee_mausolee") {
       return (
-        monument.category === "Mosquée" ||
-        monument.category === "Mausolée & Mosquée" ||
-        monument.category === "Médersa & Mosquée"
+        monument.category === "Mosque" ||
+        monument.category === "Mausole & Mosque" ||
+        monument.category === "Mdersa & Mosque"
       );
     }
 
     if (categoryFilter === "medersa") {
-      return monument.category === "Médersa" || monument.category === "Médersa & Mosquée";
+      return monument.category === "Mdersa" || monument.category === "Mdersa & Mosque";
     }
 
     return monument.category === categoryFilter;
@@ -405,10 +405,10 @@ const HeritageSection = () => {
               <span className="font-body text-sm font-semibold text-foreground">Trier</span>
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger
-                  aria-label="Trier par catégorie"
+                  aria-label="Trier par catgorie"
                   className="h-9 min-w-[220px] border-moroccan-ochre/30 bg-background/80 font-body text-sm"
                 >
-                  <SelectValue placeholder="Choisir une catégorie" />
+                  <SelectValue placeholder="Choisir une catgorie" />
                 </SelectTrigger>
                 <SelectContent className="border-moroccan-ochre/30 bg-card">
                   {categoryFilters.map((option) => (
@@ -421,9 +421,9 @@ const HeritageSection = () => {
             </div>
           </div>
           <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">Guide Touristique</p>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Patrimoine de la Médina</h2>
+          <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">Patrimoine de la Mdina</h2>
           <p className="font-body text-muted-foreground max-w-xl mx-auto">
-            Explorez les trésors architecturaux et culturels d'une ville qui a traversé 12 siècles d'histoire.
+            Explorez les trsors architecturaux et culturels d'une ville qui a travers 12 sicles d'histoire.
           </p>
         </motion.div>
 
@@ -465,7 +465,7 @@ const HeritageSection = () => {
                     <Star size={14} /> {m.duration}
                   </span>
                   <span className="flex items-center gap-1">
-                    <MapPin size={14} /> Médina
+                    <MapPin size={14} /> Mdina
                   </span>
                 </div>
               </div>
