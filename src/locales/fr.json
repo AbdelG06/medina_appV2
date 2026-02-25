@@ -1,0 +1,66 @@
+{
+  "brand": "Medina de Fes",
+  "nav": {
+    "home": "Accueil",
+    "heritage": "Patrimoine",
+    "shop": "Boutique",
+    "souvenirs": "Souvenirs",
+    "tools": "Outils",
+    "about": "A propos",
+    "portal": "Mon espace",
+    "login": "Se connecter",
+    "menu": "Menu"
+  },
+  "footer": {
+    "title": "Medina de Fes",
+    "description": "Decouvrez la medina de Fes, patrimoine mondial UNESCO, entre histoire vivante et artisanat d'excellence.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "location": "Fes el-Bali, Maroc",
+    "copyright": "© 2026 Medina de Fes - Tous droits reserves."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "uploading": "Upload en cours...",
+    "publish": "Publier",
+    "delete": "Supprimer",
+    "like": "Like",
+    "visitor": "Visiteur",
+    "addComment": "Ajouter un commentaire",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "logout": "Deconnexion",
+    "switchToFr": "Passer en francais",
+    "switchToAr": "Passer en arabe"
+  },
+  "portal": {
+    "title": "Administration & artisans",
+    "subtitle": "Dashboard moderne, validation workflow, gestion produits/monuments, galerie et messagerie interne.",
+    "secureSpace": "Espace securise",
+    "role": "Role",
+    "adminDashboard": "Dashboard",
+    "manageMonuments": "Gestion monuments",
+    "manageArtisans": "Gestion artisans",
+    "artisanProducts": "Produits artisans",
+    "gallery": "Galerie",
+    "reviews": "Avis & commentaires",
+    "users": "Utilisateurs",
+    "settings": "Parametres",
+    "artisanDashboard": "Tableau de bord",
+    "myProducts": "Mes produits",
+    "addProduct": "Ajouter produit",
+    "messages": "Messages",
+    "myProfile": "Mon profil"
+  },
+  "souvenirs": {
+    "badge": "Photos souvenirs",
+    "title": "Galerie communautaire de la medina",
+    "subtitle": "Partagez vos photos, likez et commentez.",
+    "captionLabel": "Legende photo",
+    "captionPlaceholder": "Ex: Coucher de soleil a Bab Boujloud",
+    "orImageUrl": "Ou URL image",
+    "loginToPublish": "Connectez-vous pour publier une photo.",
+    "uploadedForModeration": "Photo envoyee pour moderation.",
+    "loginToLike": "Connectez-vous pour liker."
+  }
+}

@@ -4,11 +4,18 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
+  assetsInclude: ["**/*.JPG", "**/*.PNG", "**/*.CR2"],
   server: {
     host: "127.0.0.1",
     port: 8080,
     hmr: {
       overlay: true,
+    },
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:3001",
+        changeOrigin: true,
+      },
     },
   },
   plugins: [react()],

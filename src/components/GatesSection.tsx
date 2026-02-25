@@ -17,6 +17,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ComponentType } from "react";
+import { useAppSettings } from "@/contexts/AppSettingsContext";
 
 const gateIllustrations: Record<string, ComponentType<{ className?: string }>> = {
   "bab-boujloud": BabBoujloud,
@@ -29,43 +30,38 @@ const gateIllustrations: Record<string, ComponentType<{ className?: string }>> =
   "bab-dekkakin": BabDekkakin,
   "bab-el-hadid": BabElHadid,
   "bab-jdid": BabJdid,
-  "bab-el-khokha": BabElKhokha,
+  "bab-makina": BabElKhokha,
   "bab-segma": BabSegma,
 };
 
-const GateCard = ({ gate, index }: { gate: typeof gates[0]; index: number }) => {
+const GateCard = ({ gate, index }: { gate: (typeof gates)[0]; index: number }) => {
   const navigate = useNavigate();
+  const { language, t } = useAppSettings();
   const Illustration = gateIllustrations[gate.slug];
+  const gateName = language === "ar" ? gate.name.ar : gate.name.fr;
+  const gateDate = language === "ar" ? gate.date.ar : gate.date.fr;
 
   return (
     <motion.button
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
+      transition={{ delay: index * 0.08, duration: 0.5 }}
       onClick={() => navigate(`/porte/${gate.slug}`)}
       className="group relative cursor-pointer focus:outline-none"
-      aria-label={`Découvrir ${gate.name}`}
+      aria-label={t(`Decouvrir ${gate.name.fr}`, `????? ${gate.name.ar}`)}
     >
       <div className="relative w-full max-w-[260px] mx-auto">
-        {/* Gate illustration */}
         <div className="relative overflow-hidden rounded-lg shadow-md group-hover:shadow-moroccan transition-shadow duration-500">
-          {Illustration && (
-            <Illustration className="w-full h-auto" />
-          )}
-          {/* Hover glow */}
+          {Illustration && <Illustration className="w-full h-auto" />}
           <div className="absolute inset-0 bg-moroccan-gold/0 group-hover:bg-moroccan-gold/10 transition-all duration-500 pointer-events-none" />
-          {/* Door opening effect on hover */}
           <div className="absolute inset-0 origin-left bg-foreground/0 group-hover:bg-foreground/15 transition-all duration-700 group-hover:[transform:perspective(800px)_rotateY(-15deg)] pointer-events-none" />
         </div>
 
-        {/* Name plate */}
         <div className="mt-4 text-center">
           <div className="inline-block px-5 py-2 bg-card border border-border rounded-lg shadow-sm group-hover:shadow-moroccan transition-shadow duration-300">
-            <span className="font-heading text-sm md:text-base font-bold text-foreground">
-              {gate.name}
-            </span>
-            <span className="block font-body text-xs text-muted-foreground mt-0.5">{gate.date}</span>
+            <span className="font-heading text-sm md:text-base font-bold text-foreground">{gateName}</span>
+            <span className="block font-body text-xs text-muted-foreground mt-0.5">{gateDate}</span>
           </div>
         </div>
       </div>
@@ -74,10 +70,11 @@ const GateCard = ({ gate, index }: { gate: typeof gates[0]; index: number }) => 
 };
 
 const GatesSection = () => {
+  const { t } = useAppSettings();
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    align: 'center',
-    containScroll: 'trimSnaps',
+    align: "center",
+    containScroll: "trimSnaps",
     slidesToScroll: 1,
   });
 
@@ -92,9 +89,12 @@ const GatesSection = () => {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  const scrollTo = useCallback((index: number) => {
-    if (emblaApi) emblaApi.scrollTo(index);
-  }, [emblaApi]);
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) emblaApi.scrollTo(index);
+    },
+    [emblaApi],
+  );
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -106,12 +106,12 @@ const GatesSection = () => {
 
     onSelect();
     setScrollSnaps(emblaApi.scrollSnapList());
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
 
     return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('reInit', onSelect);
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
 
@@ -125,18 +125,17 @@ const GatesSection = () => {
           className="text-center mb-16"
         >
           <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">
-            Portes Historiques
+            {t("Portes Historiques", "Portes Historiques")}
           </p>
           <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Parmi les 12 Portes de la Médina de Fès
+            {t("Parmi les 12 Portes de la Medina de Fes", "?? ??? 12 ???? ?? ????? ??? ???????")}
           </h2>
           <p className="font-body text-muted-foreground max-w-xl mx-auto">
-            Chaque porte est une entrée vers un monde de découvertes. Cliquez pour explorer.
+            {t("Chaque porte est une entree vers un monde de decouvertes. Cliquez pour explorer.", "?? ??? ?? ???? ????? ?? ??????????. ???? ?????????.")}
           </p>
         </motion.div>
 
         <div className="relative max-w-7xl mx-auto">
-          {/* Carousel */}
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-6">
               {gates.map((gate, i) => (
@@ -150,11 +149,10 @@ const GatesSection = () => {
             </div>
           </div>
 
-          {/* Navigation buttons */}
           <button
             onClick={scrollPrev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-card border-2 border-moroccan-gold/30 hover:border-moroccan-gold hover:bg-moroccan-gold/10 text-foreground rounded-full p-3 shadow-lg transition-all duration-300 z-10 group"
-            aria-label="Porte précédente"
+            aria-label={t("Porte precedente", "Porte precedente")}
           >
             <ChevronLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
@@ -162,23 +160,20 @@ const GatesSection = () => {
           <button
             onClick={scrollNext}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-card border-2 border-moroccan-gold/30 hover:border-moroccan-gold hover:bg-moroccan-gold/10 text-foreground rounded-full p-3 shadow-lg transition-all duration-300 z-10 group"
-            aria-label="Porte suivante"
+            aria-label={t("Porte suivante", "Porte suivante")}
           >
             <ChevronRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
           </button>
 
-          {/* Dots navigation */}
           <div className="flex justify-center gap-2 mt-8">
             {scrollSnaps.map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex
-                    ? 'bg-moroccan-gold w-8'
-                    : 'bg-moroccan-gold/30 hover:bg-moroccan-gold/50'
+                  index === selectedIndex ? "bg-moroccan-gold w-8" : "bg-moroccan-gold/30 hover:bg-moroccan-gold/50"
                 }`}
-                aria-label={`Aller à la diapositive ${index + 1}`}
+                aria-label={t(`Aller a la diapositive ${index + 1}`, `?????? ??? ??????? ${index + 1}`)}
               />
             ))}
           </div>

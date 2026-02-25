@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 
 const ChatbotButton = () => {
   const [open, setOpen] = useState(false);
@@ -43,15 +42,11 @@ const ChatbotButton = () => {
       )}
 
       {/* Chat window */}
-      <AnimatePresence>
-        {open && (
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="w-80 sm:w-96 max-h-[500px] rounded-2xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden"
-              style={{ position: "fixed", bottom: 104, right: 24, zIndex: 101 }}
-            >
+      {open && (
+          <div
+            className="w-80 sm:w-96 max-h-[500px] rounded-2xl bg-card border border-border shadow-2xl flex flex-col overflow-hidden"
+            style={{ position: "fixed", bottom: 104, right: 24, zIndex: 101 }}
+          >
             {/* Header with close X */}
             <div className="bg-moroccan-gradient p-4 text-primary-foreground flex items-center justify-between">
               <div>
@@ -125,9 +120,8 @@ const ChatbotButton = () => {
                 <Send size={16} />
               </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
     </>
   );
 };

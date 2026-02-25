@@ -1,30 +1,39 @@
-import babBoujloud from "../assets/bab-boujloud.jpg";
+import boujloud2 from "../assets/Boujloud2.jpg";
 import babFtouh from "../assets/Bab_Ftouh.jpg";
 import babGuissa from "../assets/bab_guissa.jpg";
 import babRcif from "../assets/bab_rcif.jpg";
 import babMahrouk from "../assets/bab_mahrouk.jpg";
 import babChorfa from "../assets/bab_chorfa.jpg";
-import boujloud2 from "../assets/Boujloud2.jpg";
-import heroFez from "../assets/hero-fez.jpg";
-import portePalais from "../assets/Porte_palais.jpg";
+import babSemmarine from "../assets/bab-semmarin.jpg";
+import babDekkakin from "../assets/bab-dekkakin.jpg";
+import babElHadid from "../assets/bab-elhadid.jpg";
+import babJdid from "../assets/bab-jdid.jpg";
+import babMakina from "../assets/Bab_makina.jpg";
+import babSegma from "../assets/bab-segma.jpg";
 
 import ecoleBounania from "../assets/ecole_bounania.jpg";
-import darBatha from "../assets/Dar-batha.jpg";
-import tannerie from "../assets/tannerie.jpg";
-import museeNejjarine from "../assets/musee-nejjarine.jpg";
+import darBatha from "../assets/dar-roumana.jpg";
+import tannerie from "../assets/tannerie.JPG";
+import museeNejjarine from "../assets/musee-nejjarine.JPG";
 import mosqueAndalous from "../assets/Mosque_andalous.jpg";
 import seffarine from "../assets/seffarine.jpg";
 import attarin from "../assets/attarin.jpg";
 import borjNord from "../assets/Borj_nord.jpg";
-import myIdriss from "../assets/my-idriss.jpg";
-import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.jpg";
+import myIdriss from "../assets/my-idriss.JPG";
+import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.PNG";
 import jnanSbil from "../assets/Jnan_Sbil.jpg";
 import zaouiaSidiAhmedTijani from "../assets/Zaouia-Sidi-Ahmed-Tijani.jpg";
 import palaisMnebhi from "../assets/palais_mnebhi.jpg";
+import portePalais from "../assets/Porte_palais.jpg";
+
+export type LocalizedText = {
+  fr: string;
+  ar: string;
+};
 
 export interface Heritage {
-  name: string;
-  description: string;
+  name: LocalizedText;
+  description: LocalizedText;
   photo: string;
   visitTime: string;
   distance: string;
@@ -34,28 +43,32 @@ export interface Heritage {
 
 export interface GateData {
   slug: string;
-  name: string;
-  date: string;
+  name: LocalizedText;
+  date: LocalizedText;
   photo: string;
-  description: string;
+  description: LocalizedText;
   heritage: Heritage[];
-  suggestedCircuit: string;
+  suggestedCircuit: LocalizedText;
   circuitDuration: string;
 }
 
 export const gates: GateData[] = [
   {
     slug: "bab-boujloud",
-    name: "Bab Boujloud",
-    date: "Construite en 1913",
-    photo: babBoujloud,
-    description:
-      "La porte emblématique aux zellige bleus et verts, entrée principale de Fès el-Bali. Côté extérieur, elle arbore le bleu de Fès, et côté intérieur, le vert de l'Islam. C'est le point de départ idéal pour explorer la médina.",
+    name: { fr: "Bab Boujloud", ar: "Bab Boujloud" },
+    date: { fr: "Construite en 1913", ar: "???? ??? 1913" },
+    photo: boujloud2,
+    description: {
+      fr: "Porte iconique en zellige bleu et vert, principale entree vers Fes el-Bali.",
+      ar: "????? ????? ????? ???? ?????? ??? ?????? ??????? ??? ??? ??????.",
+    },
     heritage: [
       {
-        name: "Médersa Bou Inania",
-        description:
-          "Chef-d'œuvre mérinide (1351-1356), ornée de zellige, stuc sculpté et bois de cèdre.",
+        name: { fr: "Medersa Bou Inania", ar: "Medersa Bou Inania" },
+        description: {
+          fr: "Chef-d'oeuvre merinide au decor de zellige, stuc et bois cisele.",
+          ar: "???? ?????? ?????? ?????? ????? ?????? ???????.",
+        },
         photo: ecoleBounania,
         visitTime: "45 min",
         distance: "150 m",
@@ -63,9 +76,11 @@ export const gates: GateData[] = [
         lng: -4.9854216,
       },
       {
-        name: "Musée Batha",
-        description:
-          "Ancien palais royal transformé en musée des arts traditionnels marocains, avec un magnifique jardin andalou.",
+        name: { fr: "Musee Batha", ar: "Musee Batha" },
+        description: {
+          fr: "Ancien palais royal converti en musee des arts traditionnels.",
+          ar: "??? ???? ???? ???? ??? ???? ?????? ?????????.",
+        },
         photo: darBatha,
         visitTime: "45 min",
         distance: "200 m",
@@ -73,20 +88,22 @@ export const gates: GateData[] = [
         lng: -4.9830669,
       },
     ],
-    suggestedCircuit: "Circuit Historique",
+    suggestedCircuit: { fr: "Circuit Historique", ar: "Circuit Historique" },
     circuitDuration: "90 min",
   },
   {
     slug: "bab-ftouh",
-    name: "Bab Ftouh",
-    date: "XIIe siècle",
+    name: { fr: "Bab Ftouh", ar: "Bab Ftouh" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
     photo: babFtouh,
-    description:
-      "La 'Porte de la Conquête', située au sud de la médina. Elle mène vers le plus grand cimetière de Fès et offre une perspective unique sur l'histoire militaire des dynasties marocaines.",
+    description: {
+      fr: "Porte sud historique menant vers des quartiers anciens et des cimetieres majeurs.",
+      ar: "????? ?????? ??????? ???? ??? ????? ????? ?????? ????.",
+    },
     heritage: [
       {
-        name: "Mosquée des Andalous",
-        description: "Mosquée historique fondée au IXe siècle, symbole des origines de Fès.",
+        name: { fr: "Mosquee des Andalous", ar: "Mosquee des Andalous" },
+        description: { fr: "Mosquee fondee au IXe siecle, symbole des origines de Fes.", ar: "???? ??? ?? ????? ??????? ??? ?????? ???." },
         photo: mosqueAndalous,
         visitTime: "15 min",
         distance: "400 m",
@@ -94,9 +111,8 @@ export const gates: GateData[] = [
         lng: -4.9784065,
       },
       {
-        name: "Tanneries Chouara",
-        description:
-          "Les plus anciennes tanneries du monde, où le cuir est traité selon des méthodes ancestrales.",
+        name: { fr: "Tanneries Chouara", ar: "Tanneries Chouara" },
+        description: { fr: "Tanneries historiques actives depuis des siecles.", ar: "????? ??????? ???? ??? ????." },
         photo: tannerie,
         visitTime: "1h",
         distance: "300 m",
@@ -104,21 +120,22 @@ export const gates: GateData[] = [
         lng: -4.9758927,
       },
     ],
-    suggestedCircuit: "Circuit Spirituel",
+    suggestedCircuit: { fr: "Circuit Spirituel", ar: "Circuit Spirituel" },
     circuitDuration: "120 min",
   },
   {
     slug: "bab-guissa",
-    name: "Bab Guissa",
-    date: "XIIe siècle",
+    name: { fr: "Bab Guissa", ar: "Bab Guissa" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
     photo: babGuissa,
-    description:
-      "Porte nord surplombant la médina, offrant une vue panoramique spectaculaire sur Fès el-Bali. à proximité se trouve le célèbre Palais Jamai, transformé en hôtel de luxe.",
+    description: {
+      fr: "Porte nord offrant une belle vue sur la medina et ses remparts.",
+      ar: "????? ?????? ???? ?????? ????? ??? ??????? ????????.",
+    },
     heritage: [
       {
-        name: "Borj Nord",
-        description:
-          "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la médina.",
+        name: { fr: "Borj Nord", ar: "Borj Nord" },
+        description: { fr: "Forteresse avec panorama exceptionnel sur Fes.", ar: "??? ??????? ????????? ????? ??? ???." },
         photo: borjNord,
         visitTime: "45 min",
         distance: "500 m",
@@ -126,31 +143,31 @@ export const gates: GateData[] = [
         lng: -4.9875131,
       },
       {
-        name: "Musée Batha",
-        description:
-          "Ancien palais royal transformé en musée des arts traditionnels marocains, avec un magnifique jardin andalou.",
+        name: { fr: "Musee Batha", ar: "Musee Batha" },
+        description: { fr: "Musee d'arts traditionnels avec jardin andalou.", ar: "???? ?????? ????????? ?? ????? ???????." },
         photo: darBatha,
         visitTime: "45 min",
-        distance: "1,4 km",
+        distance: "1.4 km",
         lat: 34.0601798,
         lng: -4.9830669,
       },
     ],
-    suggestedCircuit: "Circuit Historique",
+    suggestedCircuit: { fr: "Circuit Historique", ar: "Circuit Historique" },
     circuitDuration: "90 min",
   },
   {
     slug: "bab-rcif",
-    name: "Bab Rcif",
-    date: "XIIe siècle",
+    name: { fr: "Bab Rcif", ar: "Bab Rcif" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
     photo: babRcif,
-    description:
-      "Porte donnant accès au quartier commerçant le plus animé de la médina. Le quartier Rcif est célèbre pour son marché aux épices, ses souks de produits frais et son atmosphère vibrante.",
+    description: {
+      fr: "Acces direct a un quartier commercant tres anime de la medina.",
+      ar: "???? ????? ??? ?? ????? ???? ??????? ???? ???????.",
+    },
     heritage: [
       {
-        name: "Place Seffarine",
-        description:
-          "Place historique célèbre pour ses dinandiers et son ambiance artisanale unique.",
+        name: { fr: "Place Seffarine", ar: "Place Seffarine" },
+        description: { fr: "Place celebre pour le travail du cuivre.", ar: "???? ?????? ?????? ??????." },
         photo: seffarine,
         visitTime: "20 min",
         distance: "450 m",
@@ -158,9 +175,8 @@ export const gates: GateData[] = [
         lng: -4.9795875,
       },
       {
-        name: "Tanneries Chouara",
-        description:
-          "Les plus anciennes tanneries du monde, où le cuir est traité selon des méthodes ancestrales.",
+        name: { fr: "Tanneries Chouara", ar: "Tanneries Chouara" },
+        description: { fr: "Ateliers de cuir traditionnels en activite.", ar: "??? ??????? ??????? ????? ?? ???? ????." },
         photo: tannerie,
         visitTime: "1h",
         distance: "300 m",
@@ -168,21 +184,22 @@ export const gates: GateData[] = [
         lng: -4.9758927,
       },
     ],
-    suggestedCircuit: "Circuit Artisanal",
+    suggestedCircuit: { fr: "Circuit Artisanal", ar: "Circuit Artisanal" },
     circuitDuration: "150 min",
   },
   {
     slug: "bab-mahrouk",
-    name: "Bab Mahrouk",
-    date: "XIIIe siècle",
+    name: { fr: "Bab Mahrouk", ar: "Bab Mahrouk" },
+    date: { fr: "XIIIe siecle", ar: "????? 13" },
     photo: babMahrouk,
-    description:
-      "Porte historique proche de la forteresse nord. Son nom, signifiant 'la Brûlée', rappelle qu'on y exposait autrefois les têtes des criminels. Elle offre un accès direct au Borj Nord.",
+    description: {
+      fr: "Porte historique pres des hauteurs nord de la medina.",
+      ar: "????? ??????? ??? ????????? ???????? ???????.",
+    },
     heritage: [
       {
-        name: "Borj Nord",
-        description:
-          "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la médina.",
+        name: { fr: "Borj Nord", ar: "Borj Nord" },
+        description: { fr: "Forteresse saadienne avec vue large.", ar: "???? ????? ??????? ?????." },
         photo: borjNord,
         visitTime: "45 min",
         distance: "200 m",
@@ -190,31 +207,31 @@ export const gates: GateData[] = [
         lng: -4.9875131,
       },
       {
-        name: "Jardin Jnan Sbil",
-        description:
-          "Jardin historique entre Fès Jdid et la médina, apprécié pour ses allées ombragées et ses fontaines.",
+        name: { fr: "Jardin Jnan Sbil", ar: "Jardin Jnan Sbil" },
+        description: { fr: "Jardin historique apprecie pour ses allees ombragees.", ar: "????? ??????? ?? ????? ????? ?????." },
         photo: jnanSbil,
         visitTime: "30 min",
-        distance: "1,5 km",
+        distance: "1.5 km",
         lat: 34.0595888,
         lng: -4.9985685,
       },
     ],
-    suggestedCircuit: "Circuit Historique",
+    suggestedCircuit: { fr: "Circuit Historique", ar: "Circuit Historique" },
     circuitDuration: "120 min",
   },
   {
     slug: "bab-chorfa",
-    name: "Bab Chorfa",
-    date: "XIVe siècle",
+    name: { fr: "Bab Chorfa", ar: "Bab Chorfa" },
+    date: { fr: "XIVe siecle", ar: "????? 14" },
     photo: babChorfa,
-    description:
-      "La 'Porte des Nobles', menant au mausolée du fondateur spirituel de Fès, Moulay Idriss II. C'est l'un des accès les plus vénérés de la médina, emprunté par les pèlerins depuis des siècles.",
+    description: {
+      fr: "Porte associee aux parcours spirituels de la medina.",
+      ar: "????? ?????? ????????? ??????? ???? ???????.",
+    },
     heritage: [
       {
-        name: "Mausolée de Moulay Idriss II",
-        description:
-          "Lieu spirituel majeur, dédié au fondateur de Fès, à l'architecture raffinée.",
+        name: { fr: "Mausolee de Moulay Idriss II", ar: "Mausolee de Moulay Idriss II" },
+        description: { fr: "Lieu spirituel majeur de la ville de Fes.", ar: "???? ???? ????? ?? ????? ???." },
         photo: myIdriss,
         visitTime: "30 min",
         distance: "100 m",
@@ -222,9 +239,8 @@ export const gates: GateData[] = [
         lng: -4.9795875,
       },
       {
-        name: "Mosquée Al Quaraouiyine",
-        description:
-          "Fondée en 859, considérée comme la plus ancienne université du monde. Un joyau de l'architecture islamique.",
+        name: { fr: "Mosquee Al Quaraouiyine", ar: "Mosquee Al Quaraouiyine" },
+        description: { fr: "Monument religieux et intellectuel fonde en 859.", ar: "???? ???? ????? ???? ??? 859." },
         photo: mosqueeAlKaraouine,
         visitTime: "30 min",
         distance: "250 m",
@@ -232,21 +248,22 @@ export const gates: GateData[] = [
         lng: -4.9733667,
       },
     ],
-    suggestedCircuit: "Circuit Spirituel",
+    suggestedCircuit: { fr: "Circuit Spirituel", ar: "Circuit Spirituel" },
     circuitDuration: "90 min",
   },
   {
     slug: "bab-semmarine",
-    name: "Bab Semmarine",
-    date: "XIIe siècle",
-    photo: boujloud2,
-    description:
-      "La 'Porte des Brossiers', nommée d'après le souk traditionnel des fabricants de selles et de harnais. Point d'entrée stratégique vers le quartier artisanal de la médina.",
+    name: { fr: "Bab Semmarine", ar: "Bab Semmarine" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
+    photo: babSemmarine,
+    description: {
+      fr: "Porte reliee a des zones artisanales traditionnelles.",
+      ar: "????? ?????? ???????? ??????? ?????????.",
+    },
     heritage: [
       {
-        name: "Médersa Al-Attarine",
-        description:
-          "École coranique mérinide du XIVe siècle, connue pour ses zelliges et son bois sculpté d'une grande finesse.",
+        name: { fr: "Medersa Al-Attarine", ar: "Medersa Al-Attarine" },
+        description: { fr: "Ecole merinide celebre pour son decor raffine.", ar: "????? ?????? ?????? ???????? ???????." },
         photo: attarin,
         visitTime: "30 min",
         distance: "300 m",
@@ -254,9 +271,8 @@ export const gates: GateData[] = [
         lng: -4.9761914,
       },
       {
-        name: "Place Seffarine",
-        description:
-          "Place historique célèbre pour ses dinandiers et son ambiance artisanale unique.",
+        name: { fr: "Place Seffarine", ar: "Place Seffarine" },
+        description: { fr: "Ateliers de cuivre et ambiance locale forte.", ar: "????? ?????? ?????? ????? ?????." },
         photo: seffarine,
         visitTime: "20 min",
         distance: "350 m",
@@ -264,21 +280,22 @@ export const gates: GateData[] = [
         lng: -4.9795875,
       },
     ],
-    suggestedCircuit: "Circuit Artisanal",
+    suggestedCircuit: { fr: "Circuit Artisanal", ar: "Circuit Artisanal" },
     circuitDuration: "110 min",
   },
   {
     slug: "bab-dekkakin",
-    name: "Bab Dekkakin",
-    date: "XIIe siècle",
-    photo: heroFez,
-    description:
-      "La 'Porte des Bancs', autrefois entourée de marchands ambulants installés sur des bancs. Elle marque l'entrée du quartier résidentiel traditionnel de la médina.",
+    name: { fr: "Bab Dekkakin", ar: "Bab Dekkakin" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
+    photo: babDekkakin,
+    description: {
+      fr: "Porte proche d'axes de circulation historiques de Fes Jdid.",
+      ar: "????? ????? ?? ????? ??????? ?????? ?? ??? ??????.",
+    },
     heritage: [
       {
-        name: "Musée Nejjarine",
-        description:
-          "Ancien fondouk restauré, dédié aux arts et métiers du bois avec terrasse panoramique.",
+        name: { fr: "Musee Nejjarine", ar: "Musee Nejjarine" },
+        description: { fr: "Fondouk restaure dedie aux arts du bois.", ar: "???? ?????? ???? ???? ????? ?????." },
         photo: museeNejjarine,
         visitTime: "1h",
         distance: "250 m",
@@ -286,9 +303,8 @@ export const gates: GateData[] = [
         lng: -4.978485,
       },
       {
-        name: "Place Seffarine",
-        description:
-          "Place historique célèbre pour ses dinandiers et son ambiance artisanale unique.",
+        name: { fr: "Place Seffarine", ar: "Place Seffarine" },
+        description: { fr: "Place artisanale animee.", ar: "???? ????? ????? ???????." },
         photo: seffarine,
         visitTime: "20 min",
         distance: "300 m",
@@ -296,21 +312,22 @@ export const gates: GateData[] = [
         lng: -4.9795875,
       },
     ],
-    suggestedCircuit: "Circuit Historique",
+    suggestedCircuit: { fr: "Circuit Historique", ar: "Circuit Historique" },
     circuitDuration: "100 min",
   },
   {
     slug: "bab-el-hadid",
-    name: "Bab El Hadid",
-    date: "XIIIe siècle",
-    photo: portePalais,
-    description:
-      "La 'Porte de Fer', impressionnante par ses dimensions et ses portes massives en fer forgé. Elle servait autrefois de poste de contrôle principal pour les marchandises entrant dans la ville.",
+    name: { fr: "Bab El Hadid", ar: "Bab El Hadid" },
+    date: { fr: "XIIIe siecle", ar: "????? 13" },
+    photo: babElHadid,
+    description: {
+      fr: "Porte monumentale et repere fort des abords du palais royal.",
+      ar: "????? ???? ????? ???? ??? ????? ??????.",
+    },
     heritage: [
       {
-        name: "Porte du Palais Royal de Fès",
-        description:
-          "Entrée officielle du Palais Royal, l'un des symboles architecturaux les plus impressionnants de Fès, mêlant artisanat traditionnel marocain et grandeur royale.",
+        name: { fr: "Porte du Palais Royal", ar: "Porte du Palais Royal" },
+        description: { fr: "Ensemble monumental au decor artisanal impressionnant.", ar: "????? ????? ???? ?????? ??????? ?????." },
         photo: portePalais,
         visitTime: "20 min",
         distance: "400 m",
@@ -318,30 +335,31 @@ export const gates: GateData[] = [
         lng: -4.9962019,
       },
       {
-        name: "Jardin Jnan Sbil",
-        description:
-          "Jardin historique entre Fès Jdid et la médina, apprécié pour ses allées ombragées et ses fontaines.",
+        name: { fr: "Jardin Jnan Sbil", ar: "Jardin Jnan Sbil" },
+        description: { fr: "Jardin public historique entre Fes Jdid et la medina.", ar: "????? ??????? ??? ??? ?????? ???????? ???????." },
         photo: jnanSbil,
         visitTime: "30 min",
-        distance: "1,1 km",
+        distance: "1.1 km",
         lat: 34.0595888,
         lng: -4.9985685,
       },
     ],
-    suggestedCircuit: "Circuit Historique",
+    suggestedCircuit: { fr: "Circuit Historique", ar: "Circuit Historique" },
     circuitDuration: "130 min",
   },
   {
     slug: "bab-jdid",
-    name: "Bab Jdid",
-    date: "XVIe siècle",
-    photo: portePalais,
-    description:
-      "La 'Porte Nouvelle', construite par les Saadiens. Bien que 'nouvelle' en comparaison, elle a plus de 500 ans d'histoire et ouvre sur Fès el-Jdid, la ville nouvelle médiévale.",
+    name: { fr: "Bab Jdid", ar: "Bab Jdid" },
+    date: { fr: "XVIe siecle", ar: "????? 16" },
+    photo: babJdid,
+    description: {
+      fr: "Porte historique de Fes Jdid et point de passage vers les jardins.",
+      ar: "????? ??????? ?? ??? ?????? ???? ??? ???????.",
+    },
     heritage: [
       {
-        name: "Palais Mnebhi",
-        description: "Palais historique connu pour ses patios, jardins, stuc et zellige décoratif.",
+        name: { fr: "Palais Mnebhi", ar: "Palais Mnebhi" },
+        description: { fr: "Palais connu pour ses patios et son zellige.", ar: "??? ????? ??????? ?????? ????????." },
         photo: palaisMnebhi,
         visitTime: "25 min",
         distance: "900 m",
@@ -349,9 +367,8 @@ export const gates: GateData[] = [
         lng: -4.9892321,
       },
       {
-        name: "Jardin Jnan Sbil",
-        description:
-          "Jardin historique entre Fès Jdid et la médina, apprécié pour ses allées ombragées et ses fontaines.",
+        name: { fr: "Jardin Jnan Sbil", ar: "Jardin Jnan Sbil" },
+        description: { fr: "Espace vert historique et paisible.", ar: "???? ???? ?????? ?????." },
         photo: jnanSbil,
         visitTime: "30 min",
         distance: "700 m",
@@ -359,21 +376,22 @@ export const gates: GateData[] = [
         lng: -4.9985685,
       },
     ],
-    suggestedCircuit: "Circuit Promenade",
+    suggestedCircuit: { fr: "Circuit Promenade", ar: "Circuit Promenade" },
     circuitDuration: "120 min",
   },
   {
     slug: "bab-makina",
-    name: "Bab Makina",
-    date: "XIIe siècle",
-    photo: heroFez,
-    description:
-      "Petite porte discrète mais stratégique, son nom signifie 'petite ouverture'. Elle offre un accès direct aux quartiers résidentiels authentiques, loin des circuits touristiques.",
+    name: { fr: "Bab Makina", ar: "Bab Makina" },
+    date: { fr: "XIXe siecle", ar: "????? 19" },
+    photo: babMakina,
+    description: {
+      fr: "Porte liee aux espaces ceremoniels et culturels de Fes Jdid.",
+      ar: "????? ?????? ????????? ???????? ??????????? ?? ??? ??????.",
+    },
     heritage: [
       {
-        name: "Musée Nejjarine",
-        description:
-          "Ancien fondouk restauré, dédié aux arts et métiers du bois avec terrasse panoramique.",
+        name: { fr: "Musee Nejjarine", ar: "Musee Nejjarine" },
+        description: { fr: "Collection remarquable autour des arts du bois.", ar: "??????? ????? ??? ???? ?????." },
         photo: museeNejjarine,
         visitTime: "1h",
         distance: "220 m",
@@ -381,9 +399,8 @@ export const gates: GateData[] = [
         lng: -4.978485,
       },
       {
-        name: "Mosquée Al Quaraouiyine",
-        description:
-          "Fondée en 859, considérée comme la plus ancienne université du monde. Un joyau de l'architecture islamique.",
+        name: { fr: "Mosquee Al Quaraouiyine", ar: "Mosquee Al Quaraouiyine" },
+        description: { fr: "Monument majeur de l'histoire religieuse de Fes.", ar: "???? ????? ?? ??????? ?????? ?????? ???." },
         photo: mosqueeAlKaraouine,
         visitTime: "30 min",
         distance: "350 m",
@@ -391,20 +408,22 @@ export const gates: GateData[] = [
         lng: -4.9733667,
       },
     ],
-    suggestedCircuit: "Circuit Artisanal",
+    suggestedCircuit: { fr: "Circuit Artisanal", ar: "Circuit Artisanal" },
     circuitDuration: "95 min",
   },
   {
     slug: "bab-segma",
-    name: "Bab Segma",
-    date: "XIIe siècle",
-    photo: heroFez,
-    description:
-      "Porte orientale de la médina donnant accès au quartier andalou. Son architecture massive témoigne de l'importance stratégique de cette entrée dans le système défensif de Fès.",
+    name: { fr: "Bab Segma", ar: "Bab Segma" },
+    date: { fr: "XIIe siecle", ar: "????? 12" },
+    photo: babSegma,
+    description: {
+      fr: "Porte orientale reliant les quartiers andalous de la medina.",
+      ar: "????? ????? ??? ??? ??????? ????????? ???? ???????.",
+    },
     heritage: [
       {
-        name: "Mosquée des Andalous",
-        description: "Mosquée historique fondée au IXe siècle, symbole des origines de Fès.",
+        name: { fr: "Mosquee des Andalous", ar: "Mosquee des Andalous" },
+        description: { fr: "Mosquee historique fondee au IXe siecle.", ar: "???? ?????? ???? ?? ????? ??????." },
         photo: mosqueAndalous,
         visitTime: "15 min",
         distance: "450 m",
@@ -412,9 +431,8 @@ export const gates: GateData[] = [
         lng: -4.9784065,
       },
       {
-        name: "Zaouia Sidi Ahmed Tijani",
-        description:
-          "Lieu spirituel majeur de la confrérie Tijania, visité par des fidèles du monde entier.",
+        name: { fr: "Zaouia Sidi Ahmed Tijani", ar: "Zaouia Sidi Ahmed Tijani" },
+        description: { fr: "Lieu spirituel de reference pour la Tijania.", ar: "???? ???? ????? ??????? ?????????." },
         photo: zaouiaSidiAhmedTijani,
         visitTime: "30 min",
         distance: "650 m",
@@ -422,7 +440,7 @@ export const gates: GateData[] = [
         lng: -4.9837016,
       },
     ],
-    suggestedCircuit: "Circuit Spirituel",
+    suggestedCircuit: { fr: "Circuit Spirituel", ar: "Circuit Spirituel" },
     circuitDuration: "105 min",
   },
 ];

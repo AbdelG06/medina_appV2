@@ -1,6 +1,12 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import "./i18n";
+
+const initialLang = window.localStorage.getItem("fes-language") === "ar" ? "ar" : "fr";
+document.documentElement.lang = initialLang;
+document.documentElement.dir = initialLang === "ar" ? "rtl" : "ltr";
+document.body.classList.toggle("rtl", initialLang === "ar");
 
 const rootElement = document.getElementById("root");
 
