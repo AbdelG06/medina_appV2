@@ -2,7 +2,7 @@
 import { useAppSettings } from "@/contexts/AppSettingsContext";
 import riadSoultana from "../assets/riad_soultana.jpg";
 import fezAndFriends from "../assets/fez-and-friends.jpg";
-import moorishCabana from "../assets/moorish_cabana.JPG";
+import moorishCabana from "../assets/moorish_cabana.jpg";
 import darRoumana from "../assets/dar-roumana.jpg";
 import riad53 from "../assets/riad53.jpg";
 import elforno from "../assets/elforno.jpg";

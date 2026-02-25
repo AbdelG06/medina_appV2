@@ -1,7 +1,7 @@
 import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.PNG";
 import ecoleBounania from "../assets/ecole_bounania.jpg";
-import tannerie from "../assets/tannerie.JPG";
-import museeNejjarin from "../assets/musee-nejjarine.JPG";
+import tannerie from "../assets/tannerie.jpg";
+import museeNejjarin from "../assets/musee-nejjarine.jpg";
 import darBatha from "../assets/dar-roumana.jpg";
 import borjNord from "../assets/Borj_nord.jpg";
 

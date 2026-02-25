@@ -13,13 +13,13 @@ import babSegma from "../assets/bab-segma.jpg";
 
 import ecoleBounania from "../assets/ecole_bounania.jpg";
 import darBatha from "../assets/dar-roumana.jpg";
-import tannerie from "../assets/tannerie.JPG";
-import museeNejjarine from "../assets/musee-nejjarine.JPG";
+import tannerie from "../assets/tannerie.jpg";
+import museeNejjarine from "../assets/musee-nejjarine.jpg";
 import mosqueAndalous from "../assets/Mosque_andalous.jpg";
 import seffarine from "../assets/seffarine.jpg";
 import attarin from "../assets/attarin.jpg";
 import borjNord from "../assets/Borj_nord.jpg";
-import myIdriss from "../assets/my-idriss.JPG";
+import myIdriss from "../assets/my-idriss.jpg";
 import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.PNG";
 import jnanSbil from "../assets/Jnan_Sbil.jpg";
 import zaouiaSidiAhmedTijani from "../assets/Zaouia-Sidi-Ahmed-Tijani.jpg";
