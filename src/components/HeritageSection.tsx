@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Clock, MapPin, SlidersHorizontal, Star, X } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import mosqueeAlKaraouine from "../assets/mosquee-al-karaouine.PNG";
@@ -9,7 +9,7 @@ import museeNejjarin from "../assets/musee-nejjarine.jpg";
 import myIdriss from "../assets/my-idriss.jpg";
 import seffarine from "../assets/seffarine.jpg";
 import attarin from "../assets/attarin.jpg";
-import darBatha from "../assets/dar-roumana.jpg";
+import darBatha from "../assets/Dar-batha.jpg";
 import borjNord from "../assets/Borj_nord.jpg";
 import zaouiaSidiAhmedTijani from "../assets/Zaouia-Sidi-Ahmed-Tijani.jpg";
 import portePalais from "../assets/Porte_palais.jpg";
@@ -129,14 +129,14 @@ const monuments: Monument[] = [
     name: "Mosque Al Quaraouiyine",
     category: "Mosque",
     description:
-      "Fonde en 859, c'est la plus ancienne universit du monde encore en activit. Un joyau de l'architecture islamique.",
-    hours: "Visible de l'extrieur",
+      "Fondee en 859, c'est l'une des plus anciennes universites du monde encore en activite, et un joyau de l'architecture islamique.",
+    hours: "Visible de l'exterieur",
     duration: "30 min",
     image: mosqueeAlKaraouine,
     details: [
-      "  voir : salle de prire monumentale, bibliothque historique, zellige et bois sculpt.",
-      " Accs : intrieur rserv aux musulmans.",
-      " Horaires : visible pendant les prires.",
+      "  voir : salle de priere monumentale, bibliotheque historique, zellige et bois sculpte.",
+      " Acces : interieur reserve aux musulmans.",
+      " Horaires : visible pendant les prieres.",
       " Lieu : quartier central de la mdina.",
     ],
   },
@@ -144,15 +144,15 @@ const monuments: Monument[] = [
     name: "Mdersa Bou Inania",
     category: "Mdersa & Mosque",
     description:
-      "Chef-d'uvre mrinide (1351-1356), orne de zellige, stuc sculpt et bois de cdre.",
+      "Chef-d'oeuvre merinide (1351-1356), ornee de zellige, de stuc sculpte et de bois de cedre.",
     hours: "9h - 17h",
     duration: "45 min",
     image: ecoleBounania,
     details: [
-      "  voir : patio central, fontaine, boiseries et stucs finement sculpts.",
-       " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 10 dh",
-      " Horaires : 8h18h.",
-      " Dure : 1530 min.",
+      "  voir : patio central, fontaine, boiseries et stucs finement sculptes.",
+      " Acces : interieur reserve aux musulmans. Prix d'entree general : 10 dh.",
+      " Horaires : 8h-18h.",
+      " Duree : 15-30 min.",
       " Lieu : rue Talaa Kebira, mdina.",
     ],
   },
@@ -160,14 +160,14 @@ const monuments: Monument[] = [
     name: "Tanneries Chouara",
     category: "Artisanat",
     description:
-      "Les plus anciennes tanneries du monde, o le cuir est trait selon des mthodes ancestrales.",
+      "Parmi les plus anciennes tanneries du monde, ou le cuir est traite selon des methodes ancestrales.",
     hours: "8h - 18h",
     duration: "1h",
     image: tannerie,
     details: [
       "  voir : bacs de teinture, processus artisanal, terrasses d'observation.",
-      " Odeur forte, prvoir un foulard.",
-      " Dure : 1545 min.",
+      " Odeur forte, prevoir un foulard.",
+      " Duree : 15-45 min.",
       " Lieu : quartier Blida, mdina.",
     ],
   },
@@ -175,15 +175,15 @@ const monuments: Monument[] = [
     name: "Muse Nejjarine",
     category: "Muse",
     description:
-      "Ancien fondouk restaur, ddi aux arts et mtiers du bois avec terrasse panoramique.",
+      "Ancien fondouk restaure, dedie aux arts et metiers du bois, avec une terrasse panoramique.",
     hours: "10h - 17h",
     duration: "1h",
     image: museeNejjarin,
     details: [
       "  voir : architecture traditionnelle, fontaine Nejjarine, artisanat du bois.",
-      " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 20 dh",
-      " Horaires : 10h17h.",
-      " Dure : 3070 min.",
+      " Acces : ouvert aux visiteurs. Prix d'entree general : 20 dh.",
+      " Horaires : 10h-17h.",
+      " Duree : 30-70 min.",
       " Lieu : place Nejjarine, mdina.",
     ],
   },
@@ -191,14 +191,14 @@ const monuments: Monument[] = [
     name: "Mausole de Moulay Idriss II",
     category: "Mausole & Mosque",
     description:
-      "Lieu spirituel majeur, ddi au fondateur de Fs,  l'architecture raffine.",
-    hours: "Journe",
+      "Lieu spirituel majeur dedie au fondateur de Fes, remarquable par son architecture raffinee.",
+    hours: "Journee",
     duration: "30 min",
     image: myIdriss,
     details: [
       "  voir : porte monumentale, zellige, stuc et ambiance spirituelle.",
-      " Accs : intrieur rserv aux musulmans.",
-      " Dure : 1520 min.",
+      " Acces : interieur reserve aux musulmans.",
+      " Duree : 15-20 min.",
       " Lieu : quartier central, prs de la place Seffarine.",
     ],
   },
@@ -206,14 +206,14 @@ const monuments: Monument[] = [
     name: "Place Seffarine",
     category: "Place",
     description:
-      "Place historique clbre pour ses dinandiers et son ambiance artisanale unique.",
-    hours: "Accs libre",
+      "Place historique celebre pour ses dinandiers et son ambiance artisanale unique.",
+    hours: "Acces libre",
     duration: "20 min",
     image: seffarine,
     details: [
       "  voir : ateliers de cuivre, ambiance sonore, fontaine centrale.",
-      " Horaires : accs libre.",
-      " Dure : 1020 min.",
+      " Horaires : acces libre.",
+      " Duree : 10-20 min.",
       " Lieu : prs de la Mdersa Seffarine.",
     ],
   },
@@ -221,14 +221,14 @@ const monuments: Monument[] = [
     name: "Mdersa Al-Attarine",
     category: "Mdersa",
     description:
-      "cole coranique mrinide du XIVe sicle, connue pour ses zelliges et son bois sculpt dune grande finesse.",
+      "Ecole coranique merinide du XIVe siecle, connue pour ses zelliges et son bois sculpte d'une grande finesse.",
     hours: "9h - 17h",
     duration: "30 min",
     image: attarin,
     details: [
-      "  voir : cour intrieure, zellige fin, stuc sculpt, bois cisel.",
-      " Accs : intrieur rserv aux musulmans.Prix entre gnrale : 20 dh",
-      " Horaires : 9h  17h.",
+      "  voir : cour interieure, zellige fin, stuc sculpte, bois cisele.",
+      " Acces : interieur reserve aux musulmans. Prix d'entree general : 20 dh.",
+      " Horaires : 9h-17h.",
       " Lieu : prs de la place Seffarine, mdina de Fs.",
     ],
   },
@@ -236,14 +236,14 @@ const monuments: Monument[] = [
     name: "Muse Batha",
     category: "Muse",
     description:
-      "Ancien palais royal transform en muse des arts traditionnels marocains, avec un magnifique jardin andalou.",
+      "Ancien palais royal transforme en musee des arts traditionnels marocains, avec un magnifique jardin andalou.",
     hours: "10h - 18h",
     duration: "45 min",
     image: darBatha,
     details: [
-      "  voir : collections dart marocain, cramiques, tapis, jardin andalou.",
-      " Accs : ouvert aux visiteurs, Prix entre gnrale : 60 dh",
-      " Horaires : 10h  18h.",
+      "  voir : collections d'art marocain, ceramiques, tapis, jardin andalou.",
+      " Acces : ouvert aux visiteurs. Prix d'entree general : 60 dh.",
+      " Horaires : 10h-18h.",
       " Lieu : avenue des Mrinides, Fs.",
     ],
   },
@@ -251,14 +251,14 @@ const monuments: Monument[] = [
     name: "Borj Nord",
     category: "Forteresse",
     description:
-      "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la mdina.",
+      "Forteresse saadienne offrant une vue panoramique exceptionnelle sur toute la medina.",
     hours: "9h - 18h",
     duration: "45 min",
     image: borjNord,
     details: [
-      "  voir : panorama sur la mdina, muse des armes, architecture militaire.",
-      " Accs : ouvert aux visiteurs, Prix entre gnrale : 10 dh",
-      " Horaires : De 9h  12h et de 15h  18h.",
+      "  voir : panorama sur la mdina, musee des armes, architecture militaire.",
+      " Acces : ouvert aux visiteurs. Prix d'entree general : 10 dh.",
+      " Horaires : de 9h-12h et de 15h-18h.",
       " Lieu : Oued Fejjaline, 5 Ave du Batha, Fs.",
     ],
   },
@@ -266,14 +266,14 @@ const monuments: Monument[] = [
     name: "Zaouia Sidi Ahmed Tijani",
     category: "Mausole & Mosque",
     description:
-      "Lieu spirituel majeur de la confrrie Tijania, visit par des fidles du monde entier.",
-    hours: "Visible depuis lextrieur",
-    duration: "2030 min",
+      "Lieu spirituel majeur de la confrerie Tijania, visite par des fideles du monde entier.",
+    hours: "Visible depuis l'exterieur",
+    duration: "20-30 min",
     image: zaouiaSidiAhmedTijani,
     details: [
       "  voir : mausole, salle de prire, dcorations islamiques.",
-      " Accs : intrieur rserv aux musulmans.",
-      " Horaires : visible depuis lextrieur.",
+      " Acces : interieur reserve aux musulmans.",
+      " Horaires : visible depuis l'exterieur.",
       " Lieu : Rue Tafilalete, mdina de Fs.",
     ],
   },
@@ -281,14 +281,14 @@ const monuments: Monument[] = [
     name: "Porte du Palais Royal de Fs",
     category: "Palais",
     description:
-      "Entre officielle du Palais Royal, elle est lun des symboles architecturaux les plus impressionnants de Fs, mlant artisanat traditionnel marocain et grandeur royale.",
-    hours: "Visible depuis lextrieur toute la journe",
-    duration: "2030 min",
+      "Entree officielle du Palais Royal, elle est l'un des symboles architecturaux les plus impressionnants de Fes, melant artisanat traditionnel marocain et grandeur royale.",
+    hours: "Visible depuis l'exterieur toute la journee",
+    duration: "20-30 min",
     image: portePalais,
     details: [
       "  voir : sept portes monumentales en bronze dor, zellige vert, mosaques et bois sculpt.",
-      " Accs : intrieur du palais ferm au public.",
-      " Horaires : visible depuis lextrieur toute la journe.",
+      " Acces : interieur du palais ferme au public.",
+      " Horaires : visible depuis l'exterieur toute la journee.",
       " Lieu : place des Alaouites, Fs Jdid.",
     ],
   },
@@ -296,14 +296,14 @@ const monuments: Monument[] = [
     name: "Jardin Jnan Sbil",
     category: "Jardin",
     description:
-      "Jardin historique entre Fs Jdid et la mdina, apprci pour ses alles ombrages et ses fontaines.",
+      "Jardin historique entre Fes Jdid et la medina, apprecie pour ses allees ombragees et ses fontaines.",
     hours: "8h - 19h",
-    duration: "2030 min",
+    duration: "20-30 min",
     image: jnanSbil,
     details: [
-      "  voir : jardins andalous, fontaines, alles ombrages.",
-      " Accs : ouvert au public (Gratuit).",
-      " Horaires : 8h  19h.",
+      "  voir : jardins andalous, fontaines, allees ombragees.",
+      " Acces : ouvert au public (gratuit).",
+      " Horaires : 8h-19h.",
       " Lieu : entre Fs Jdid et la mdina.",
     ],
   },
@@ -311,58 +311,63 @@ const monuments: Monument[] = [
     name: "Mosque des Andalous",
     category: "Mosque",
     description:
-      "Mosque historique fonde au IXe sicle, symbole des origines de Fs.",
-    hours: "Visible pendant les prires",
+      "Mosquee historique fondee au IXe siecle, symbole des origines de Fes.",
+    hours: "Visible pendant les prieres",
     duration: "15 min",
     image: mosqueAndalous,
     details: [
-      "  voir : minaret, salle de prire, architecture andalouse.",
-      " Accs : intrieur rserv aux musulmans.",
-      " Horaires : visible pendant les prires.",
+      "  voir : minaret, salle de priere, architecture andalouse.",
+      " Acces : interieur reserve aux musulmans.",
+      " Horaires : visible pendant les prieres.",
       " Lieu : quartier des Andalous, mdina de Fs.",
     ],
   },
   {
     name: "Palais Mnebhi",
     category: "Palais",
-    description: "Palais historique connu pour ses patios, jardins, stuc et zellige dcoratif.",
+    description: "Palais historique connu pour ses patios, ses jardins, son stuc et son zellige decoratif.",
     hours: "10h - 16h",
-    duration: "15  25 min",
+    duration: "15-25 min",
     image: palaisMnebhi,
     details: [
-      "  voir : patios, jardins, stuc et zellige dcoratif.",
-      " Accs : ouvert aux visiteurs (selon disponibilit & Rservation).",
-      " Horaires : 10h  16h.",
+      "  voir : patios, jardins, stuc et zellige decoratif.",
+      " Acces : ouvert aux visiteurs (selon disponibilite et reservation).",
+      " Horaires : 10h-16h.",
       " Lieu : Rue Souiket Ben Safi, mdina de Fs.",
     ],
   },
 ];
 
 const HeritageSection = () => {
+  const shouldReduceMotion = useReducedMotion();
   const [openMonumentName, setOpenMonumentName] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_MONUMENTS);
   const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
 
-  const filteredMonuments = monuments.filter((monument) => {
-    if (categoryFilter === ALL_CATEGORIES) {
-      return true;
-    }
+  const filteredMonuments = useMemo(
+    () =>
+      monuments.filter((monument) => {
+        if (categoryFilter === ALL_CATEGORIES) {
+          return true;
+        }
 
-    if (categoryFilter === "mosquee_mausolee") {
-      return (
-        monument.category === "Mosque" ||
-        monument.category === "Mausole & Mosque" ||
-        monument.category === "Mdersa & Mosque"
-      );
-    }
+        if (categoryFilter === "mosquee_mausolee") {
+          return (
+            monument.category === "Mosque" ||
+            monument.category === "Mausole & Mosque" ||
+            monument.category === "Mdersa & Mosque"
+          );
+        }
 
-    if (categoryFilter === "medersa") {
-      return monument.category === "Mdersa" || monument.category === "Mdersa & Mosque";
-    }
+        if (categoryFilter === "medersa") {
+          return monument.category === "Mdersa" || monument.category === "Mdersa & Mosque";
+        }
 
-    return monument.category === categoryFilter;
-  });
+        return monument.category === categoryFilter;
+      }),
+    [categoryFilter],
+  );
 
   const selectedMonument = openMonumentName
     ? monuments.find((monument) => monument.name === openMonumentName) ?? null
@@ -394,7 +399,7 @@ const HeritageSection = () => {
     <section id="patrimoine" className="py-24 bg-background">
       <div className="container mx-auto px-4">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="relative text-center mb-16"
@@ -431,10 +436,10 @@ const HeritageSection = () => {
           {visibleMonuments.map((m, i) => (
             <motion.div
               key={m.name}
-              initial={{ opacity: 0, y: 30 }}
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
+              transition={shouldReduceMotion ? { duration: 0 } : { delay: i * 0.06, duration: 0.3 }}
               className="group bg-card rounded-xl overflow-hidden shadow-moroccan hover:shadow-lg transition-shadow border border-border cursor-pointer"
               onClick={() => setOpenMonumentName(m.name)}
             >
@@ -444,6 +449,8 @@ const HeritageSection = () => {
                   alt={m.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  fetchPriority="auto"
+                  decoding="async"
                 />
                 <span
                   className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold ${
@@ -528,7 +535,7 @@ const HeritageSection = () => {
                         height="200"
                         style={{ border: 0 }}
                         allowFullScreen
-                        loading="eager"
+                        loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         title={`Carte ${selectedMonument.name}`}
                       />

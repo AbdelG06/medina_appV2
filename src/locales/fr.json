@@ -31,7 +31,7 @@
     "lightMode": "Mode clair",
     "logout": "Deconnexion",
     "switchToFr": "Passer en francais",
-    "switchToAr": "Passer en arabe"
+    "switchToEn": "Passer en anglais"
   },
   "portal": {
     "title": "Administration & artisans",
@@ -42,6 +42,7 @@
     "manageMonuments": "Gestion monuments",
     "manageArtisans": "Gestion artisans",
     "artisanProducts": "Produits artisans",
+    "contentMgmt": "Gestion contenus",
     "gallery": "Galerie",
     "reviews": "Avis & commentaires",
     "users": "Utilisateurs",

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import i18n from "@/i18n";
 
-export type Language = "fr" | "ar";
+export type Language = "fr" | "en";
 export type Theme = "light" | "dark";
 
 type AppSettingsContextValue = {
@@ -10,7 +10,7 @@ type AppSettingsContextValue = {
   theme: Theme;
   toggleTheme: () => void;
   isRtl: boolean;
-  t: (fr: string, ar: string) => string;
+  t: (fr: string, alt: string) => string;
 };
 
 const AppSettingsContext = createContext<AppSettingsContextValue | undefined>(undefined);
@@ -20,10 +20,10 @@ const THEME_KEY = "fes-theme";
 
 const getInitialLanguage = (): Language => {
   const saved = window.localStorage.getItem(LANGUAGE_KEY);
-  if (saved === "ar" || saved === "fr") {
+  if (saved === "en" || saved === "fr") {
     return saved;
   }
-  return i18n.resolvedLanguage === "ar" ? "ar" : "fr";
+  return i18n.resolvedLanguage === "en" ? "en" : "fr";
 };
 
 const getInitialTheme = (): Theme => {
@@ -48,8 +48,8 @@ export const AppSettingsProvider = ({ children }: { children: ReactNode }) => {
     void i18n.changeLanguage(language);
     window.localStorage.setItem(LANGUAGE_KEY, language);
     document.documentElement.lang = language;
-    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-    document.body.classList.toggle("rtl", language === "ar");
+    document.documentElement.dir = "ltr";
+    document.body.classList.remove("rtl");
   }, [language]);
 
   useEffect(() => {
@@ -64,8 +64,9 @@ export const AppSettingsProvider = ({ children }: { children: ReactNode }) => {
       setLanguage,
       theme,
       toggleTheme: () => setTheme((prev) => (prev === "dark" ? "light" : "dark")),
-      isRtl: language === "ar",
-      t: (fr: string, ar: string) => (language === "ar" ? ar : fr),
+      isRtl: false,
+      // Keep existing bilingual content stable: EN falls back to FR for dual-string literals.
+      t: (fr: string, _alt: string) => fr,
     }),
     [language, theme],
   );

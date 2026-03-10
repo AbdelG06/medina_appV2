@@ -13,6 +13,8 @@ type AuthUser = {
   cin?: string;
   artisanCode?: string;
   email?: string;
+  bio?: string;
+  avatarUrl?: string;
 };
 
 type AuthContextValue = {
@@ -27,6 +29,12 @@ type AuthContextValue = {
     shopAddress: string;
     shopName: string;
     email?: string;
+    password: string;
+  }) => Promise<void>;
+  registerUser: (payload: {
+    firstName: string;
+    lastName: string;
+    email: string;
     password: string;
   }) => Promise<void>;
   logout: () => void;
@@ -81,6 +89,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(result.user);
   };
 
+  const registerUser: AuthContextValue["registerUser"] = async (payload) => {
+    const result = await api.post<{ token: string; user: AuthUser }>("/api/auth/register-user", payload, null);
+    setToken(result.token);
+    setUser(result.user);
+  };
+
   const logout = () => {
     setToken(null);
     setUser(null);
@@ -93,6 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isAuthenticated: Boolean(token && user),
       login,
       registerArtisan,
+      registerUser,
       logout,
       refreshMe,
     }),

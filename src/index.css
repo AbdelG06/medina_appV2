@@ -61,31 +61,38 @@
   }
 
   .dark {
-    --background: 20 25% 8%;
-    --foreground: 38 25% 90%;
-    --card: 20 20% 12%;
-    --card-foreground: 38 25% 90%;
-    --popover: 20 25% 8%;
-    --popover-foreground: 38 25% 90%;
-    --primary: 212 55% 50%;
-    --primary-foreground: 38 33% 96%;
-    --secondary: 160 30% 40%;
-    --secondary-foreground: 38 33% 96%;
-    --muted: 20 15% 18%;
-    --muted-foreground: 35 15% 60%;
-    --accent: 35 70% 50%;
+    --background: 214 34% 9%;
+    --foreground: 37 45% 94%;
+    --card: 214 30% 12%;
+    --card-foreground: 37 45% 94%;
+    --popover: 214 34% 10%;
+    --popover-foreground: 37 45% 94%;
+    --primary: 196 70% 45%;
+    --primary-foreground: 37 45% 96%;
+    --secondary: 162 44% 32%;
+    --secondary-foreground: 37 45% 96%;
+    --muted: 214 22% 17%;
+    --muted-foreground: 35 20% 75%;
+    --accent: 37 82% 56%;
     --accent-foreground: 20 25% 12%;
-    --border: 20 15% 22%;
-    --input: 20 15% 22%;
-    --ring: 212 55% 50%;
-    --sidebar-background: 20 20% 10%;
-    --sidebar-foreground: 38 25% 90%;
-    --sidebar-primary: 212 55% 50%;
+    --border: 214 20% 24%;
+    --input: 214 20% 24%;
+    --ring: 196 70% 45%;
+    --sidebar-background: 214 31% 11%;
+    --sidebar-foreground: 37 45% 94%;
+    --sidebar-primary: 196 70% 45%;
     --sidebar-primary-foreground: 38 33% 96%;
-    --sidebar-accent: 20 15% 18%;
-    --sidebar-accent-foreground: 38 25% 90%;
-    --sidebar-border: 20 15% 22%;
-    --sidebar-ring: 212 55% 50%;
+    --sidebar-accent: 214 22% 17%;
+    --sidebar-accent-foreground: 37 45% 94%;
+    --sidebar-border: 214 20% 24%;
+    --sidebar-ring: 196 70% 45%;
+    --moroccan-blue: 196 70% 45%;
+    --moroccan-blue-light: 196 64% 58%;
+    --moroccan-green: 162 44% 36%;
+    --moroccan-green-light: 162 40% 48%;
+    --moroccan-ochre: 37 82% 56%;
+    --moroccan-ochre-dark: 37 76% 66%;
+    --moroccan-cream: 37 45% 94%;
   }
 }
 
@@ -98,6 +105,13 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     transition: background-color 250ms ease, color 250ms ease;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(1200px 520px at 8% -10%, hsl(var(--moroccan-blue) / 0.24), transparent 60%),
+      radial-gradient(900px 420px at 95% -20%, hsl(var(--moroccan-green) / 0.17), transparent 55%);
+    background-attachment: fixed;
   }
 
   body.rtl {

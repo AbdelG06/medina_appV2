@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import path from "path";
 import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/auth.routes.js";
 import monumentsRoutes from "./routes/monuments.routes.js";
@@ -8,6 +9,7 @@ import productsRoutes from "./routes/products.routes.js";
 import souvenirsRoutes from "./routes/souvenirs.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import messagesRoutes from "./routes/messages.routes.js";
+import contentRoutes from "./routes/content.routes.js";
 import { errorHandler, notFoundHandler } from "./middleware/error.js";
 
 export const createApp = () => {
@@ -21,6 +23,7 @@ export const createApp = () => {
     }),
   );
   app.use(express.json({ limit: "2mb" }));
+  app.use("/uploads", express.static(path.resolve(process.cwd(), "uploads")));
 
   app.use(
     "/api",
@@ -42,6 +45,7 @@ export const createApp = () => {
   app.use("/api/souvenirs", souvenirsRoutes);
   app.use("/api/admin", adminRoutes);
   app.use("/api/messages", messagesRoutes);
+  app.use("/api/content", contentRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

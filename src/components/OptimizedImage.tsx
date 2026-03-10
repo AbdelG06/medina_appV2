@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 
 type OptimizedImageProps = {
   src: string;
@@ -9,6 +9,16 @@ type OptimizedImageProps = {
 };
 
 const cloudinarySizes = [320, 480, 768, 1024, 1366];
+const isValidImageSrc = (value: string) => {
+  const src = String(value || "").trim();
+  if (!src || src === "invalid/" || src === "invalid") {
+    return false;
+  }
+  if (src.startsWith("/") || src.startsWith("./") || src.startsWith("../")) {
+    return true;
+  }
+  return /^https?:\/\//i.test(src) || src.startsWith("data:image/");
+};
 
 const buildCloudinaryVariant = (url: string, width: number) => {
   if (!url.includes("res.cloudinary.com") || !url.includes("/upload/")) {
@@ -18,37 +28,39 @@ const buildCloudinaryVariant = (url: string, width: number) => {
   return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width},c_limit/`);
 };
 
-export const OptimizedImage = ({ src, alt, className, sizes = "100vw", eager = false }: OptimizedImageProps) => {
-  const [loaded, setLoaded] = useState(false);
+const OptimizedImageComponent = ({ src, alt, className, sizes = "100vw", eager = false }: OptimizedImageProps) => {
+  const safeSrc = isValidImageSrc(src) ? src : "";
 
   const srcSet = useMemo(() => {
-    if (!src.includes("res.cloudinary.com")) {
+    if (!safeSrc.includes("res.cloudinary.com")) {
       return undefined;
     }
 
     return cloudinarySizes
       .map((size) => {
-        const variant = buildCloudinaryVariant(src, size);
+        const variant = buildCloudinaryVariant(safeSrc, size);
         return variant ? `${variant} ${size}w` : "";
       })
       .filter(Boolean)
       .join(", ");
-  }, [src]);
+  }, [safeSrc]);
 
   return (
     <div className={`relative overflow-hidden ${className || ""}`}>
-      {!loaded ? <div className="absolute inset-0 animate-pulse bg-muted" aria-hidden="true" /> : null}
-      <img
-        src={src}
-        srcSet={srcSet}
-        sizes={srcSet ? sizes : undefined}
-        alt={alt}
-        className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
-        loading={eager ? "eager" : "lazy"}
-        fetchPriority={eager ? "high" : "auto"}
-        decoding="async"
-        onLoad={() => setLoaded(true)}
-      />
+      {safeSrc ? (
+        <img
+          src={safeSrc}
+          srcSet={srcSet}
+          sizes={srcSet ? sizes : undefined}
+          alt={alt}
+          className="h-full w-full object-cover"
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
+          decoding="async"
+        />
+      ) : null}
     </div>
   );
 };
+
+export const OptimizedImage = memo(OptimizedImageComponent);

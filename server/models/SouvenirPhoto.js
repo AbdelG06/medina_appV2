@@ -14,6 +14,7 @@ const souvenirPhotoSchema = new mongoose.Schema(
     caption: { type: String, trim: true, maxlength: 180, default: "" },
     imageUrl: { type: String, trim: true, required: true },
     isApproved: { type: Boolean, default: false, index: true },
+    views: { type: Number, default: 0, min: 0 },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [souvenirCommentSchema],
   },

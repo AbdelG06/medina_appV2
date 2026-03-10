@@ -1,9 +1,9 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ChatbotButton from "@/components/ChatbotButton";
@@ -18,8 +18,22 @@ const PortalPage = React.lazy(() => import("./pages/PortalPage"));
 const MonumentDetailPage = React.lazy(() => import("./pages/MonumentDetailPage"));
 const SouvenirsPage = React.lazy(() => import("./pages/SouvenirsPage"));
 const ShopPage = React.lazy(() => import("./pages/ShopPage"));
+const EshopPage = React.lazy(() => import("./pages/EshopPage"));
+const ArtisanShopPage = React.lazy(() => import("./pages/ArtisanShopPage"));
+const ProductPublicPage = React.lazy(() => import("./pages/ProductPublicPage"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Keep cached data fresh enough without excessive refetches on tab focus/reconnect.
+      staleTime: 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 1,
+    },
+  },
+});
 
 type ErrorBoundaryState = {
   hasError: boolean;
@@ -64,6 +78,16 @@ class AppErrorBoundary extends React.Component<{ children: React.ReactNode }, Er
   }
 }
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => (
   <AppSettingsProvider>
     <AuthProvider>
@@ -72,7 +96,8 @@ const App = () => (
           <AppErrorBoundary>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+              <ScrollToTop />
               <Suspense fallback={<div className="min-h-screen bg-background" />}>
                 <Routes>
                   <Route path="/" element={<Index />} />
@@ -81,6 +106,9 @@ const App = () => (
                   <Route path="/outils" element={<ToolsPage />} />
                   <Route path="/portail" element={<PortalPage />} />
                   <Route path="/boutique" element={<ShopPage />} />
+                  <Route path="/eshop" element={<ShopPage />} />
+                  <Route path="/shop/:artisanId" element={<ArtisanShopPage />} />
+                  <Route path="/product/:id" element={<ProductPublicPage />} />
                   <Route path="/monument/:slug" element={<MonumentDetailPage />} />
                   <Route path="/souvenirs" element={<SouvenirsPage />} />
                   <Route path="*" element={<NotFound />} />

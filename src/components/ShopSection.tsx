@@ -1,13 +1,60 @@
-﻿import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { api } from "@/lib/apiClient";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import { shopItems, type LocalizedText } from "@/data/shopCatalog";
+
+type DbShopItem = {
+  _id: string;
+  type: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  price?: string;
+  contact?: string;
+};
+
+type UiShopItem = {
+  id: string;
+  name: LocalizedText;
+  artisanName: LocalizedText;
+  artisanAddress: LocalizedText;
+  description: LocalizedText;
+  image: string;
+  price: string;
+};
 
 const ShopSection = () => {
   const { language, t } = useAppSettings();
   const shouldReduceMotion = useReducedMotion();
-  const getText = (value: LocalizedText) => (language === "ar" ? value.ar : value.fr);
-  const featuredItems = shopItems.slice(0, 3);
+  const [dbItems, setDbItems] = useState<UiShopItem[]>([]);
+  const getText = (value: LocalizedText) => (language === "en" ? value.fr : value.fr);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      try {
+        const result = await api.get<{ items: DbShopItem[] }>("/api/content?type=eshop,product");
+        const mapped = (result.items || []).map<UiShopItem>((item) => ({
+          id: item._id,
+          name: { fr: item.name || "Produit", ar: "" },
+          artisanName: { fr: item.contact || "Artisan local", ar: "" },
+          artisanAddress: { fr: "Medina de Fes", ar: "" },
+          description: { fr: item.description || "", ar: "" },
+          image: item.imageUrl || "",
+          price: item.price || "Prix sur demande",
+        }));
+        setDbItems(mapped);
+      } catch {
+        setDbItems([]);
+      }
+    };
+
+    void loadItems();
+  }, []);
+
+  const featuredItems = useMemo(() => (dbItems.length ? dbItems.slice(0, 3) : shopItems.slice(0, 3)), [dbItems]);
 
   return (
     <section id="boutique" className="py-24 bg-card">
@@ -19,15 +66,15 @@ const ShopSection = () => {
           className="text-center mb-8"
         >
           <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">
-            {t("Artisanat Authentique", "حرف أصيلة")}
+            {t("Artisanat Authentique", "Authentic Craftsmanship")}
           </p>
           <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">
-            {t("Boutique de la Medina", "متجر المدينة")}
+            {t("Boutique de la Medina", "Medina Shop")}
           </h2>
           <p className="font-body text-muted-foreground max-w-2xl mx-auto">
             {t(
               "Des prix transparents et equitables pour un artisanat authentique, directement des maitres artisans.",
-              "أسعار واضحة وعادلة لمنتجات حرفية أصيلة مباشرة من عند المعلمين الحرفيين.",
+              "Transparent and fair prices for authentic craftsmanship, directly from master artisans.",
             )}
           </p>
         </motion.div>
@@ -43,12 +90,11 @@ const ShopSection = () => {
               className="bg-background rounded-xl overflow-hidden border border-border hover:shadow-moroccan transition-shadow group"
             >
               <div className="aspect-square overflow-hidden">
-                <img
+                <OptimizedImage
                   src={item.image}
                   alt={getText(item.name)}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                  decoding="async"
+                  className="w-full h-full group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 1024px) 50vw, 33vw"
                 />
               </div>
               <div className="p-5">
@@ -70,7 +116,7 @@ const ShopSection = () => {
             to="/boutique"
             className="inline-flex items-center rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground no-underline hover:bg-primary/90 transition-colors"
           >
-            {t("Ouvrir e-shop", "فتح المتجر الإلكتروني")}
+            {t("Ouvrir e-shop", "Open e-shop")}
           </Link>
         </div>
       </div>

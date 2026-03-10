@@ -12,7 +12,7 @@ import babMakina from "../assets/Bab_makina.jpg";
 import babSegma from "../assets/bab-segma.jpg";
 
 import ecoleBounania from "../assets/ecole_bounania.jpg";
-import darBatha from "../assets/dar-roumana.jpg";
+import darBatha from "../assets/Dar-batha.jpg";
 import tannerie from "../assets/tannerie.jpg";
 import museeNejjarine from "../assets/musee-nejjarine.jpg";
 import mosqueAndalous from "../assets/Mosque_andalous.jpg";

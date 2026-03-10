@@ -1,0 +1,67 @@
+{
+  "brand": "Medina of Fez",
+  "nav": {
+    "home": "Home",
+    "heritage": "Heritage",
+    "shop": "Shop",
+    "souvenirs": "Souvenirs",
+    "tools": "Tools",
+    "about": "About",
+    "portal": "My space",
+    "login": "Sign in",
+    "menu": "Menu"
+  },
+  "footer": {
+    "title": "Medina of Fez",
+    "description": "Discover the Fez medina, a UNESCO World Heritage site, where living history meets master craftsmanship.",
+    "navigation": "Navigation",
+    "contact": "Contact",
+    "location": "Fes el-Bali, Morocco",
+    "copyright": "© 2026 Medina of Fez - All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "uploading": "Uploading...",
+    "publish": "Publish",
+    "delete": "Delete",
+    "like": "Like",
+    "visitor": "Visitor",
+    "addComment": "Add a comment",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "logout": "Logout",
+    "switchToFr": "Switch to French",
+    "switchToEn": "Switch to English"
+  },
+  "portal": {
+    "title": "Administration & artisans",
+    "subtitle": "Modern dashboard, validation workflow, products/monuments management, gallery and internal messaging.",
+    "secureSpace": "Secure space",
+    "role": "Role",
+    "adminDashboard": "Dashboard",
+    "manageMonuments": "Monuments",
+    "manageArtisans": "Artisans",
+    "artisanProducts": "Artisan products",
+    "contentMgmt": "Content management",
+    "gallery": "Gallery",
+    "reviews": "Reviews & comments",
+    "users": "Users",
+    "settings": "Settings",
+    "artisanDashboard": "Dashboard",
+    "myProducts": "My products",
+    "addProduct": "Add product",
+    "messages": "Messages",
+    "myProfile": "My profile"
+  },
+  "souvenirs": {
+    "badge": "Souvenir photos",
+    "title": "Community photo gallery",
+    "subtitle": "Share your photos, like and comment.",
+    "captionLabel": "Photo caption",
+    "captionPlaceholder": "Ex: Sunset at Bab Boujloud",
+    "orImageUrl": "Or image URL",
+    "loginToPublish": "Sign in to publish a photo.",
+    "uploadedForModeration": "Photo submitted for moderation.",
+    "loginToLike": "Sign in to like."
+  }
+}

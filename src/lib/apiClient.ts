@@ -1,4 +1,22 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+const canRetryWithRelativeApi =
+  !API_BASE ||
+  API_BASE.startsWith("/") ||
+  /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(API_BASE);
+
+const joinApiUrl = (base: string, path: string) => {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (!base) {
+    return normalizedPath;
+  }
+
+  const normalizedBase = base.endsWith("/") ? base.slice(0, -1) : base;
+  if (normalizedBase === "/api" && normalizedPath.startsWith("/api/")) {
+    return normalizedPath;
+  }
+
+  return `${normalizedBase}${normalizedPath}`;
+};
 
 export class ApiError extends Error {
   status: number;
@@ -21,29 +39,38 @@ const request = async <T>(path: string, options: RequestInit = {}, token?: strin
 
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}${path}`, {
+    res = await fetch(joinApiUrl(API_BASE, path), {
       ...options,
       headers,
     });
   } catch {
-    // Local fallback: if absolute API base fails, retry through Vite proxy (/api).
-    if (API_BASE) {
+    // Dev fallback: if direct backend URL fails, retry via Vite proxy (/api).
+    if (canRetryWithRelativeApi) {
       try {
         res = await fetch(path, {
           ...options,
           headers,
         });
       } catch {
-        throw new ApiError("API indisponible. Verifiez que le serveur backend tourne sur le bon port.", 0);
+        throw new ApiError("API indisponible. Verifie `npm run api`, le port 3001 et l'acces MongoDB Atlas (IP whitelist).", 0);
       }
     } else {
-      throw new ApiError("API indisponible. Verifiez que le serveur backend tourne sur le bon port.", 0);
+      throw new ApiError("API indisponible. Verifie `npm run api`, le port 3001 et l'acces MongoDB Atlas (IP whitelist).", 0);
     }
   }
 
-  const data = (await res.json().catch(() => ({}))) as { message?: string } & T;
+  const rawBody = await res.text();
+  let data = {} as { message?: string } & T;
+  if (rawBody) {
+    try {
+      data = JSON.parse(rawBody) as { message?: string } & T;
+    } catch {
+      data = { message: rawBody } as { message?: string } & T;
+    }
+  }
+
   if (!res.ok) {
-    throw new ApiError(data?.message || "Erreur API", res.status);
+    throw new ApiError((data?.message || "").trim() || `Erreur API (${res.status})`, res.status);
   }
   return data;
 };

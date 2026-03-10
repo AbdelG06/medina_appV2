@@ -102,7 +102,14 @@ const GateDetail = () => {
                   className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-moroccan transition-shadow cursor-pointer"
                 >
                   <div className="relative h-48">
-                    <img src={h.photo} alt={heritageName} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                    <img
+                      src={h.photo}
+                      alt={heritageName}
+                      className="w-full h-full object-cover"
+                      loading={i < 2 ? "eager" : "lazy"}
+                      fetchPriority={i < 2 ? "high" : "auto"}
+                      decoding="async"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 to-transparent" />
                   </div>
                   <div className="p-5">

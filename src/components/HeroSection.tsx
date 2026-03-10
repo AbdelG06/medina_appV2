@@ -7,8 +7,11 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img
           src={heroImg}
-          alt="Vue panoramique de la médina de Fès"
+          alt="Vue panoramique de la medina de Fes"
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/40 to-background" />
       </div>
@@ -23,14 +26,14 @@ const HeroSection = () => {
             Patrimoine Mondial UNESCO
           </p>
           <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold text-moroccan-cream mb-6 leading-tight">
-            Fès el-Bali
+            Fes el-Bali
           </h1>
           <p className="font-heading text-xl md:text-2xl text-moroccan-cream/90 italic max-w-2xl mx-auto mb-4">
-            La plus ancienne médina du monde
+            La plus ancienne medina du monde
           </p>
           <p className="font-body text-base md:text-lg text-moroccan-cream/70 max-w-xl mx-auto mb-10">
-            Fondée au VIIIe siècle, la médina de Fès est un labyrinthe vivant de 9 400 ruelles,
-            gardienne de 12 siècles d'histoire, d'artisanat et de spiritualité.
+            Fondee au VIIIe siecle, la medina de Fes est un labyrinthe vivant de 9 400 ruelles,
+            gardienne de 12 siecles d'histoire, d'artisanat et de spiritualite.
           </p>
         </motion.div>
 
@@ -59,7 +62,7 @@ const HeroSection = () => {
         <svg viewBox="0 0 1440 80" fill="none" className="w-full">
           <path
             d="M0 80V40C360 0 720 0 720 0C720 0 1080 0 1440 40V80H0Z"
-            fill="hsl(38, 33%, 96%)"
+            fill="hsl(var(--background))"
           />
         </svg>
       </div>

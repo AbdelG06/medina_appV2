@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema(
     },
     recommended: { type: Boolean, default: false, index: true },
     suspendedReason: { type: String, trim: true, maxlength: 200, default: "" },
+    bio: { type: String, trim: true, maxlength: 300, default: "" },
+    avatarUrl: { type: String, trim: true, default: "" },
   },
   { timestamps: true },
 );

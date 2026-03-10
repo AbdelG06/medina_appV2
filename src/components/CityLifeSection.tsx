@@ -1,5 +1,8 @@
-﻿import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useAppSettings } from "@/contexts/AppSettingsContext";
+import { api } from "@/lib/apiClient";
+import { OptimizedImage } from "@/components/OptimizedImage";
 import riadSoultana from "../assets/riad_soultana.jpg";
 import fezAndFriends from "../assets/fez-and-friends.jpg";
 import moorishCabana from "../assets/moorish_cabana.jpg";
@@ -7,11 +10,13 @@ import darRoumana from "../assets/dar-roumana.jpg";
 import riad53 from "../assets/riad53.jpg";
 import elforno from "../assets/elforno.jpg";
 
-type LocalizedText = { fr: string; ar: string };
+type LocalizedText = { fr: string; en: string };
+type PlaceType = "riad" | "cafe" | "restaurant";
 
 type Place = {
+  _id?: string;
   name: string;
-  type: "Riad" | "Cafe" | "Restaurant";
+  type: PlaceType;
   description: LocalizedText;
   price: string;
   contact: string;
@@ -19,13 +24,24 @@ type Place = {
   image: string;
 };
 
-const places: Place[] = [
+type ApiContentItem = {
+  _id: string;
+  type: string;
+  name: string;
+  description?: string;
+  imageUrl?: string;
+  price?: string;
+  contact?: string;
+  site?: string;
+};
+
+const fallbackPlaces: Place[] = [
   {
     name: "Riad Soultana",
-    type: "Riad",
+    type: "riad",
     description: {
       fr: "Riad traditionnel avec patio, chambres elegantes et petit-dejeuner marocain.",
-      ar: "رياض تقليدي مع فناء وغرف أنيقة وفطور مغربي.",
+      en: "Traditional riad with patio, elegant rooms and Moroccan breakfast.",
     },
     price: "Des 500 DH (environ 50 EUR / nuit)",
     contact: "@riadsoultana",
@@ -34,10 +50,10 @@ const places: Place[] = [
   },
   {
     name: "Fez and Friends",
-    type: "Cafe",
+    type: "cafe",
     description: {
       fr: "Cafe emblematique de la medina: cuisine fusion, concerts et ateliers culturels.",
-      ar: "مقهى رمزي في المدينة: مطبخ فيوجن، حفلات وورشات ثقافية.",
+      en: "Iconic medina cafe with fusion cuisine, live music and cultural workshops.",
     },
     price: "A partir de 30 MAD",
     contact: "@fezandfriendss",
@@ -46,10 +62,10 @@ const places: Place[] = [
   },
   {
     name: "Moorish Cabana",
-    type: "Cafe",
+    type: "cafe",
     description: {
       fr: "Cafe chaleureux en face de Derb Lmezdaa, boissons et pause gourmande.",
-      ar: "مقهى دافئ مقابل درب لمزدة، مشروبات واستراحة لذيذة.",
+      en: "Warm cafe near Derb Lmezdaa with drinks and sweet breaks.",
     },
     price: "06 28 65 29 39",
     contact: "@moorishcabana",
@@ -58,10 +74,10 @@ const places: Place[] = [
   },
   {
     name: "Restaurant Dar Roumana",
-    type: "Restaurant",
+    type: "restaurant",
     description: {
       fr: "Cuisine marocaine raffinee dans un cadre d'exception avec vue sur la medina.",
-      ar: "مطبخ مغربي راق في أجواء مميزة مع إطلالة على المدينة.",
+      en: "Refined Moroccan cuisine with exceptional medina views.",
     },
     price: "Menu des 250 MAD",
     contact: "@darroumana",
@@ -70,10 +86,10 @@ const places: Place[] = [
   },
   {
     name: "Riad 53",
-    type: "Riad",
+    type: "riad",
     description: {
       fr: "Hebergement de charme avec rooftop panoramique.",
-      ar: "إقامة أنيقة مع سطح بانورامي.",
+      en: "Charming accommodation with panoramic rooftop.",
     },
     price: "Des 80 EUR / nuit",
     contact: "@riad53",
@@ -82,10 +98,10 @@ const places: Place[] = [
   },
   {
     name: "Elforno Fes",
-    type: "Restaurant",
+    type: "restaurant",
     description: {
       fr: "Cuisine marocaine et mediterraneenne dans une ambiance conviviale.",
-      ar: "مطبخ مغربي ومتوسطي في أجواء ودية.",
+      en: "Moroccan and Mediterranean cuisine in a friendly atmosphere.",
     },
     price: "Menu des 50 MAD",
     contact: "@elforno_fez",
@@ -94,24 +110,55 @@ const places: Place[] = [
   },
 ];
 
-const categories: Array<{ id: Place["type"]; label: LocalizedText }> = [
-  { id: "Riad", label: { fr: "Riads", ar: "رياضات" } },
-  { id: "Cafe", label: { fr: "Cafes", ar: "مقاهي" } },
-  { id: "Restaurant", label: { fr: "Restaurants", ar: "مطاعم" } },
+const categories: Array<{ id: PlaceType; label: LocalizedText }> = [
+  { id: "riad", label: { fr: "Riads", en: "Riads" } },
+  { id: "cafe", label: { fr: "Cafes", en: "Cafes" } },
+  { id: "restaurant", label: { fr: "Restaurants", en: "Restaurants" } },
 ];
 
 const CityLifeSection = () => {
   const { language, t } = useAppSettings();
   const shouldReduceMotion = useReducedMotion();
-  const getText = (value: LocalizedText) => (language === "ar" ? value.ar : value.fr);
+  const [dbPlaces, setDbPlaces] = useState<Place[]>([]);
+
+  useEffect(() => {
+    const loadPlaces = async () => {
+      try {
+        const result = await api.get<{ items: ApiContentItem[] }>("/api/content?type=restaurant,cafe,riad");
+        const normalized = (result.items || [])
+          .filter((item) => ["restaurant", "cafe", "riad"].includes(item.type))
+          .map<Place>((item) => ({
+            _id: item._id,
+            name: item.name || "Sans nom",
+            type: item.type as PlaceType,
+            description: {
+              fr: item.description || "",
+              en: item.description || "",
+            },
+            price: item.price || "",
+            contact: item.contact || "",
+            site: item.site || "",
+            image: item.imageUrl || "",
+          }));
+        setDbPlaces(normalized);
+      } catch {
+        setDbPlaces([]);
+      }
+    };
+
+    void loadPlaces();
+  }, []);
+
+  const places = useMemo(() => (dbPlaces.length ? dbPlaces : fallbackPlaces), [dbPlaces]);
+  const getText = (value: LocalizedText) => (language === "en" ? value.en : value.fr);
 
   return (
     <section id="citylife" className="py-24 bg-card">
       <div className="container mx-auto px-4">
         <motion.div initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-6">
-          <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">{t("Vivre la Medina", "عيش المدينة")}</p>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">{t("Riads, Cafes et Restaurants", "رياضات، مقاهي ومطاعم")}</h2>
-          <p className="font-body text-muted-foreground max-w-xl mx-auto">{t("Selection de lieux authentiques pour dormir, manger et profiter de Fes.", "اختيارات أماكن أصيلة للنوم والأكل والاستمتاع بفاس.")}</p>
+          <p className="font-body text-sm uppercase tracking-[0.2em] text-moroccan-ochre-dark mb-3">{t("Vivre la Medina", "Live the Medina")}</p>
+          <h2 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-4">{t("Riads, Cafes et Restaurants", "Riads, Cafes and Restaurants")}</h2>
+          <p className="font-body text-muted-foreground max-w-xl mx-auto">{t("Selection de lieux authentiques pour dormir, manger et profiter de Fes.", "Selection of authentic places to stay, eat and enjoy Fez.")}</p>
         </motion.div>
 
         <div className="space-y-16">
@@ -121,7 +168,7 @@ const CityLifeSection = () => {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 {places.filter((p) => p.type === cat.id).map((p, i) => (
                   <motion.div
-                    key={p.name}
+                    key={p._id || p.name}
                     initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -129,18 +176,20 @@ const CityLifeSection = () => {
                     className="bg-background rounded-xl overflow-hidden border border-border hover:shadow-moroccan transition-shadow group"
                   >
                     <div className="aspect-square overflow-hidden">
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+                      <OptimizedImage src={p.image} alt={p.name} className="w-full h-full group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 1024px) 50vw, 33vw" />
                     </div>
                     <div className="p-5">
                       <div className="flex items-start justify-between mb-2 gap-3">
                         <h4 className="font-heading text-lg font-semibold text-foreground">{p.name}</h4>
-                        <span className="font-heading text-sm md:text-base font-bold text-primary text-right">{p.price}</span>
+                        <span className="font-heading text-sm md:text-base font-bold text-primary text-right">{p.price || "-"}</span>
                       </div>
                       <p className="font-body text-sm text-muted-foreground mb-3">{getText(p.description)}</p>
-                      <p className="font-body text-xs text-moroccan-ochre-dark mb-2">Instagram: {p.contact}</p>
-                      <a href={p.site} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-moroccan-ochre px-4 py-2 text-xs font-semibold text-primary-foreground shadow-moroccan hover:bg-moroccan-ochre-dark transition-colors">
-                        {t("Voir le site", "عرض")}
-                      </a>
+                      <p className="font-body text-xs text-moroccan-ochre-dark mb-2">{p.contact || "-"}</p>
+                      {p.site ? (
+                        <a href={p.site} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-lg bg-moroccan-ochre px-4 py-2 text-xs font-semibold text-primary-foreground shadow-moroccan hover:bg-moroccan-ochre-dark transition-colors">
+                          {t("Voir le site", "View site")}
+                        </a>
+                      ) : null}
                     </div>
                   </motion.div>
                 ))}

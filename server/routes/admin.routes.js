@@ -1,4 +1,5 @@
 import { Router } from "express";
+import slugify from "slugify";
 import { requireAuth, requireRole } from "../middleware/auth.js";
 import { ContentItem } from "../models/ContentItem.js";
 import { Monument } from "../models/Monument.js";
@@ -6,6 +7,8 @@ import { Product } from "../models/Product.js";
 import { SouvenirPhoto } from "../models/SouvenirPhoto.js";
 import { User } from "../models/User.js";
 import { Message } from "../models/Message.js";
+import { ProductMessage } from "../models/ProductMessage.js";
+import { Shop } from "../models/Shop.js";
 import { hashPassword } from "../utils/security.js";
 
 const router = Router();
@@ -43,20 +46,25 @@ router.get("/dashboard", async (_req, res) => {
     monumentCount,
     artisanCount,
     productCount,
+    productViewsAgg,
     visitorCount,
     latestArtisans,
     latestProducts,
+    topProducts,
     productsByCategory,
     artisansByMonth,
     monumentViews,
-    unreadMessages,
+    unreadInternalMessages,
+    unreadProductMessages,
   ] = await Promise.all([
     Monument.countDocuments({}),
     User.countDocuments({ role: "artisan" }),
     Product.countDocuments({}),
+    Product.aggregate([{ $group: { _id: null, totalViews: { $sum: { $ifNull: ["$views", 0] } } } }]),
     User.countDocuments({ role: { $in: ["user", "visitor"] } }),
     User.find({ role: "artisan" }).sort({ createdAt: -1 }).limit(6).select("firstName lastName email status createdAt").lean(),
     Product.find({}).sort({ createdAt: -1 }).limit(6).select("name category status priceDh createdAt").lean(),
+    Product.find({}).sort({ views: -1, createdAt: -1 }).limit(6).select("name title views createdAt").lean(),
     Product.aggregate([
       { $group: { _id: "$category", total: { $sum: 1 } } },
       { $project: { _id: 0, category: { $ifNull: ["$_id", "autre"] }, total: 1 } },
@@ -74,6 +82,7 @@ router.get("/dashboard", async (_req, res) => {
     ]),
     Monument.find({}).select("name views").sort({ views: -1 }).limit(8).lean(),
     Message.countDocuments({ readAt: null }),
+    ProductMessage.countDocuments({ readAt: null }),
   ]);
 
   const monthLabels = [
@@ -101,11 +110,17 @@ router.get("/dashboard", async (_req, res) => {
       monumentCount,
       artisanCount,
       productCount,
+      productViews: Number(productViewsAgg[0]?.totalViews || 0),
       visitorCount,
-      unreadMessages,
+      unreadMessages: Number(unreadInternalMessages || 0) + Number(unreadProductMessages || 0),
     },
     latestArtisans,
     latestProducts,
+    topProducts: topProducts.map((item) => ({
+      name: item.title || item.name || "Produit",
+      views: Number(item.views || 0),
+      createdAt: item.createdAt,
+    })),
     charts: {
       productsByCategory,
       artisansByMonth: artisansByMonthFilled,
@@ -137,6 +152,23 @@ router.post("/artisan", async (req, res) => {
     artisanCode,
     role: "artisan",
     status: "accepted",
+  });
+
+  const baseSlug = slugify(String(shopName).trim(), { lower: true, strict: true }) || `shop-${String(user._id).slice(-6)}`;
+  let shopSlug = baseSlug;
+  let suffix = 1;
+  while (await Shop.findOne({ shopSlug }).lean()) {
+    suffix += 1;
+    shopSlug = `${baseSlug}-${suffix}`;
+  }
+
+  await Shop.create({
+    artisanId: user._id,
+    shopName: String(shopName).trim(),
+    shopSlug,
+    shopDescription: "",
+    shopLogo: "",
+    city: "Fes",
   });
 
   return res.status(201).json({
@@ -219,6 +251,22 @@ router.patch("/artisans/:id/recommended", async (req, res) => {
   return res.json({ artisan });
 });
 
+router.delete("/artisans/:id", async (req, res) => {
+  const artisan = await User.findOne({ _id: req.params.id, role: "artisan" });
+  if (!artisan) {
+    return res.status(404).json({ message: "Artisan introuvable." });
+  }
+
+  await Promise.all([
+    Product.deleteMany({ artisan: artisan._id }),
+    SouvenirPhoto.deleteMany({ user: artisan._id }),
+    Message.deleteMany({ $or: [{ fromUser: artisan._id }, { toArtisan: artisan._id }] }),
+    User.deleteOne({ _id: artisan._id }),
+  ]);
+
+  return res.json({ message: "Artisan et ses donnees associees supprimes." });
+});
+
 router.get("/users", async (req, res) => {
   const role = req.query.role ? String(req.query.role) : undefined;
   const filter = role ? { role } : {};
@@ -231,14 +279,18 @@ router.get("/users", async (req, res) => {
 });
 
 router.get("/content", async (req, res) => {
-  const type = req.query.type ? String(req.query.type) : undefined;
-  const filter = type ? { type } : {};
-  const items = await ContentItem.find(filter).sort({ createdAt: -1 }).lean();
+  const rawTypes = req.query.type ? String(req.query.type) : "";
+  const types = rawTypes
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const filter = types.length ? { type: { $in: types } } : {};
+  const items = await ContentItem.find(filter).sort({ updatedAt: -1, createdAt: -1 }).lean();
   return res.json({ items });
 });
 
 router.post("/content", async (req, res) => {
-  const { type, name, description, imageUrl } = req.body || {};
+  const { type, name, description, imageUrl, price, contact, site } = req.body || {};
   if (!type || !name) {
     return res.status(400).json({ message: "Type et nom requis." });
   }
@@ -247,12 +299,23 @@ router.post("/content", async (req, res) => {
     name: String(name).trim(),
     description: String(description || "").trim(),
     imageUrl: String(imageUrl || "").trim(),
+    price: String(price || "").trim(),
+    contact: String(contact || "").trim(),
+    site: String(site || "").trim(),
   });
   return res.status(201).json({ item });
 });
 
 router.patch("/content/:id", async (req, res) => {
-  const update = req.body || {};
+  const update = {
+    ...(req.body?.type !== undefined ? { type: String(req.body.type).trim() } : {}),
+    ...(req.body?.name !== undefined ? { name: String(req.body.name).trim() } : {}),
+    ...(req.body?.description !== undefined ? { description: String(req.body.description).trim() } : {}),
+    ...(req.body?.imageUrl !== undefined ? { imageUrl: String(req.body.imageUrl).trim() } : {}),
+    ...(req.body?.price !== undefined ? { price: String(req.body.price).trim() } : {}),
+    ...(req.body?.contact !== undefined ? { contact: String(req.body.contact).trim() } : {}),
+    ...(req.body?.site !== undefined ? { site: String(req.body.site).trim() } : {}),
+  };
   const item = await ContentItem.findByIdAndUpdate(req.params.id, update, { new: true });
   if (!item) {
     return res.status(404).json({ message: "Element introuvable." });

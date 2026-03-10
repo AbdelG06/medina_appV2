@@ -3,10 +3,10 @@ import App from "./App.tsx";
 import "./index.css";
 import "./i18n";
 
-const initialLang = window.localStorage.getItem("fes-language") === "ar" ? "ar" : "fr";
+const initialLang = window.localStorage.getItem("fes-language") === "en" ? "en" : "fr";
 document.documentElement.lang = initialLang;
-document.documentElement.dir = initialLang === "ar" ? "rtl" : "ltr";
-document.body.classList.toggle("rtl", initialLang === "ar");
+document.documentElement.dir = "ltr";
+document.body.classList.remove("rtl");
 
 const rootElement = document.getElementById("root");
 
@@ -36,7 +36,7 @@ window.addEventListener("unhandledrejection", (event) => {
     typeof reason === "string"
       ? reason
       : reason?.stack || reason?.message || JSON.stringify(reason);
-  renderFatalError("Promesse rejetée", msg);
+  renderFatalError("Promesse rejetee", msg);
 });
 
 try {
@@ -45,3 +45,4 @@ try {
   const msg = error instanceof Error ? error.stack || error.message : String(error);
   renderFatalError("Erreur au montage React", msg);
 }
+
