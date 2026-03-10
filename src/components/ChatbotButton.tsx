@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
 
 const ChatbotButton = () => {
   const [open, setOpen] = useState(false);
@@ -8,6 +10,11 @@ const ChatbotButton = () => {
   ]);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
 
   const quickReplies = [
     "Meilleur trajet vers Al Quaraouiyine ?",
@@ -15,15 +22,46 @@ const ChatbotButton = () => {
     "Horaires du Musée Nejjarine ?",
   ];
 
-  const handleSend = (text?: string) => {
+  const handleSend = async (text?: string) => {
     const msg = text || input;
-    if (!msg.trim()) return;
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: msg },
-      { role: "bot", text: "Merci pour votre question ! Cette fonctionnalité sera bientôt connectée à un assistant intelligent. En attendant, n'hésitez pas à explorer nos circuits et notre guide patrimoine. 🏛" },
-    ]);
+    if (!msg.trim() || loading) return;
+
+    const userMsg = msg.trim();
     setInput("");
+    setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
+    setLoading(true);
+
+    // Build history for context (convert bot/user to assistant/user)
+    const history = messages
+      .filter((m) => m.role === "user" || m.role === "bot")
+      .map((m) => ({
+        role: m.role === "bot" ? "assistant" : "user",
+        content: m.text,
+      }));
+
+    try {
+      const res = await fetch(`${API_BASE}/api/chatbot`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMsg, history }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Erreur serveur");
+      }
+
+      const data = await res.json();
+      setMessages((prev) => [...prev, { role: "bot", text: data.reply }]);
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : "Erreur inconnue";
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: `${errorMsg} — Veuillez réessayer dans quelques instants. 🙏` },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -87,6 +125,7 @@ const ChatbotButton = () => {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Quick replies */}

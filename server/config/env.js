@@ -6,10 +6,8 @@ export const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   // PORT is required by most cloud providers (Render/Railway/Fly)
   port: Number(process.env.PORT || process.env.API_PORT || 3001),
-  mongoUri: process.env.MONGODB_URI || "mongodb+srv://fes_admin:Fesmedina@cluster0.imq1yqc.mongodb.net/?appName=Cluster0",
-  mongoUriDirect: process.env.MONGODB_URI_DIRECT || "",
-  mongoDbName: process.env.MONGODB_DB_NAME || "fes_medina_magic",
-  jwtSecret: process.env.JWT_SECRET || "482d9b3b3c2e3749382725ff2c9a8043f5ca3171f334d798db146b2df4cde3fd7c8c49abf9a79694594d6ee2b65c3c80d47c617ab2ce15e9f4b3dc09855f8273",
+  mongoUri: process.env.MONGODB_URI || "",
+  jwtSecret: process.env.JWT_SECRET || "",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
   adminEmail: process.env.ADMIN_EMAIL || "fesmedina@eurisa.ma",
   adminPassword: process.env.ADMIN_PASSWORD || "FesMedina@eurisa",
@@ -21,6 +19,8 @@ export const env = {
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY || "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET || "",
+  openrouterApiKey: process.env.OPENROUTER_API_KEY || "",
+  openrouterModel: process.env.OPENROUTER_MODEL || "google/gemma-3n-e2b-it:free",
 };
 
 export const assertEnv = () => {

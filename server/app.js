@@ -10,6 +10,7 @@ import souvenirsRoutes from "./routes/souvenirs.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import messagesRoutes from "./routes/messages.routes.js";
 import contentRoutes from "./routes/content.routes.js";
+import chatbotRoutes from "./routes/chatbot.routes.js";
 import { errorHandler, notFoundHandler } from "./middleware/error.js";
 
 export const createApp = () => {
@@ -46,6 +47,7 @@ export const createApp = () => {
   app.use("/api/admin", adminRoutes);
   app.use("/api/messages", messagesRoutes);
   app.use("/api/content", contentRoutes);
+  app.use("/api/chatbot", chatbotRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
